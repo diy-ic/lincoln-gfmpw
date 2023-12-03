@@ -9,3 +9,17 @@
 *.nl.v
 dependencies/*
 .venv/
+openlane/titan/runs/*
+
+def/
+gds/
+lef/
+lib/
+mag/
+maglef/
+sdc/
+sdf/
+signoff/
+spef/
+spi/
+verilog/
