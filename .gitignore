@@ -7,3 +7,5 @@
 *.vcd
 *.gtkw
 *.nl.v
+dependencies/*
+.venv/
