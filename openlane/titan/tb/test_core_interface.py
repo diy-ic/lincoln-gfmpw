@@ -103,3 +103,72 @@ async def instruction_bind_write_address(dut):
         await Timer(2, "ns")
 
         assert dut.uut_ci.stream_enabled == 0
+
+
+def send_instruction(dut, instruction: Instructions, address=0, value=0):
+    dut.instruction_i.value = instruction.value
+    dut.address_i.value = address
+    dut.value_i.value = value
+
+async def send_instruction_and_wait_posedge_clock(dut, instruction: Instructions, address=0, value=0):
+    dut.instruction_i.value = instruction.value
+    dut.address_i.value = address
+    dut.value_i.value = value
+    await RisingEdge(dut.clk_i)
+
+@cocotb.test()
+async def test_core(dut):
+    """
+    determine if the module is perfomring the correct arithmetic
+    - this is dependent on the user program that was passed into the compiler
+    - simple neuron for this example
+    """
+
+    # TODO: probably add more test cases, but the fact that the core is returning values at all is a good sign 
+
+    cocotb.start_soon(Clock(dut.clk_i, 1, "ns").start())
+    await RisingEdge(dut.clk_i)
+
+    # write zeroes to inputs
+    for i in range(4):
+        send_instruction(dut, Instructions.WRITE, i, 0)
+        await RisingEdge(dut.clk_i)
+
+    await RisingEdge(dut.clk_i)
+
+    assert dut.uut_ci.uut_simple_neuron.x0.value == 0
+    assert dut.uut_ci.uut_simple_neuron.x1.value == 0
+    assert dut.uut_ci.uut_simple_neuron.x2.value == 0
+    assert dut.uut_ci.uut_simple_neuron.x3.value == 0
+
+    # wait for change in result
+    # should be equal to 5 clock cycles
+    await Edge(dut.uut_ci.uut_simple_neuron.r)
+
+    # should be able to read the result back
+    dut.instruction_i.value = Instructions.READ.value
+    dut.address_i.value = 4
+    for i in range(5):
+        await RisingEdge(dut.clk_i)
+    # await Edge(dut.result_o)
+    assert dut.result_o == 0
+
+
+    await send_instruction_and_wait_posedge_clock(dut, Instructions.WRITE, 0, 1)
+
+    send_instruction(dut, Instructions.READ, 4)
+    await Edge(dut.result_o)
+    assert dut.result_o == 3
+
+    await send_instruction_and_wait_posedge_clock(dut, Instructions.WRITE, 1, 1)
+    await send_instruction_and_wait_posedge_clock(dut, Instructions.WRITE, 2, 1)
+    await send_instruction_and_wait_posedge_clock(dut, Instructions.WRITE, 3, 1)
+    
+
+    send_instruction(dut, Instructions.READ, 4)
+    # wait 5 clock cycles after the latest write
+    for i in range(5):
+        await RisingEdge(dut.clk_i)
+
+    await RisingEdge(dut.clk_i)
+    assert dut.result_o.value == 4
