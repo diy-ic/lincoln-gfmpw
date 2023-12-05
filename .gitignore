@@ -12,6 +12,7 @@ dependencies/*
 openlane/titan/runs/*
 __pycache__
 sim_build
+results.xml
 
 # temporarily ignore
 def/
