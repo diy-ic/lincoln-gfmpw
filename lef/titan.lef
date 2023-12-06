@@ -1,0 +1,119 @@
+VERSION 5.7 ;
+  NOWIREEXTENSIONATPIN ON ;
+  DIVIDERCHAR "/" ;
+  BUSBITCHARS "[]" ;
+MACRO titan
+  CLASS BLOCK ;
+  FOREIGN titan ;
+  ORIGIN 0.000 0.000 ;
+  SIZE 513.690 BY 531.610 ;
+  PIN spi_clock_i
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    ANTENNAGATEAREA 0.741000 ;
+    ANTENNADIFFAREA 0.410400 ;
+    PORT
+      LAYER Metal2 ;
+        RECT 349.440 0.000 350.000 4.000 ;
+    END
+  END spi_clock_i
+  PIN spi_cs_i
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    ANTENNAGATEAREA 0.741000 ;
+    ANTENNADIFFAREA 0.410400 ;
+    PORT
+      LAYER Metal2 ;
+        RECT 366.240 0.000 366.800 4.000 ;
+    END
+  END spi_cs_i
+  PIN spi_pico_i
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    ANTENNAGATEAREA 0.741000 ;
+    ANTENNADIFFAREA 0.410400 ;
+    PORT
+      LAYER Metal2 ;
+        RECT 268.800 0.000 269.360 4.000 ;
+    END
+  END spi_pico_i
+  PIN spi_poci_o
+    DIRECTION OUTPUT TRISTATE ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 2.080400 ;
+    PORT
+      LAYER Metal2 ;
+        RECT 383.040 0.000 383.600 4.000 ;
+    END
+  END spi_poci_o
+  PIN sys_clock_i
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    ANTENNAGATEAREA 0.741000 ;
+    ANTENNADIFFAREA 0.410400 ;
+    PORT
+      LAYER Metal3 ;
+        RECT 0.000 507.360 4.000 507.920 ;
+    END
+  END sys_clock_i
+  PIN vdd
+    DIRECTION INOUT ;
+    USE POWER ;
+    PORT
+      LAYER Metal4 ;
+        RECT 22.240 15.380 23.840 513.820 ;
+    END
+    PORT
+      LAYER Metal4 ;
+        RECT 175.840 15.380 177.440 513.820 ;
+    END
+    PORT
+      LAYER Metal4 ;
+        RECT 329.440 15.380 331.040 513.820 ;
+    END
+    PORT
+      LAYER Metal4 ;
+        RECT 483.040 15.380 484.640 513.820 ;
+    END
+  END vdd
+  PIN vss
+    DIRECTION INOUT ;
+    USE GROUND ;
+    PORT
+      LAYER Metal4 ;
+        RECT 99.040 15.380 100.640 513.820 ;
+    END
+    PORT
+      LAYER Metal4 ;
+        RECT 252.640 15.380 254.240 513.820 ;
+    END
+    PORT
+      LAYER Metal4 ;
+        RECT 406.240 15.380 407.840 513.820 ;
+    END
+  END vss
+  OBS
+      LAYER Metal1 ;
+        RECT 6.720 15.380 506.800 513.820 ;
+      LAYER Metal2 ;
+        RECT 6.860 4.300 506.100 513.710 ;
+        RECT 6.860 4.000 268.500 4.300 ;
+        RECT 269.660 4.000 349.140 4.300 ;
+        RECT 350.300 4.000 365.940 4.300 ;
+        RECT 367.100 4.000 382.740 4.300 ;
+        RECT 383.900 4.000 506.100 4.300 ;
+      LAYER Metal3 ;
+        RECT 4.000 508.220 505.590 513.660 ;
+        RECT 4.300 507.060 505.590 508.220 ;
+        RECT 4.000 15.540 505.590 507.060 ;
+      LAYER Metal4 ;
+        RECT 49.980 24.170 98.740 508.390 ;
+        RECT 100.940 24.170 175.540 508.390 ;
+        RECT 177.740 24.170 252.340 508.390 ;
+        RECT 254.540 24.170 329.140 508.390 ;
+        RECT 331.340 24.170 405.940 508.390 ;
+        RECT 408.140 24.170 471.380 508.390 ;
+  END
+END titan
+END LIBRARY
+

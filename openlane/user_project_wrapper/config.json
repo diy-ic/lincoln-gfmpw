@@ -4,19 +4,53 @@
 	"STD_CELL_LIBRARY": "gf180mcu_fd_sc_mcu7t5v0",
 	"VERILOG_FILES": [
 		"dir::../../verilog/rtl/defines.v",
-		"dir::../../verilog/rtl/user_project_wrapper.v"
+		"dir::../../verilog/rtl/user_project_wrapper.v",
+		"dir::../../verilog/rtl/lincoln_gfmpw.v"
 	],
 	"CLOCK_PORT": "wb_clk_i",
 	"CLOCK_NET": "mprj.clk",
 	"CLOCK_PERIOD": 25,
-	"MACRO_PLACEMENT_CFG": "dir::macro.cfg",
-	"VERILOG_FILES_BLACKBOX": [
+	"_comment_MACRO_PLACEMENT_CFG": "dir::macro.cfg",
+	"PL_MACRO_HALO": "100 100",
+
+	"_comment_VERILOG_FILES_BLACKBOX": [
 		"dir::../../verilog/gl/user_proj_example.v"
 	],
-	"EXTRA_LEFS": "dir::../../lef/user_proj_example.lef",
-	"EXTRA_GDS_FILES": "dir::../../gds/user_proj_example.gds",
-	"EXTRA_LIBS": "dir::../../lib/user_proj_example.lib",
+	"VERILOG_FILES_BLACKBOX": [
+		"dir::../../verilog/gl/manchester_baby.v",
+		"dir::../../verilog/gl/ram_5x32.v"
+	],
+
+	"EXTRA_LEFS": [
+		"dir::../../lef/manchester_baby.lef",
+		"dir::../../lef/ram_5x32.lef"
+	],
+
+	"EXTRA_GDS_FILES": [
+		"dir::../../gds/manchester_baby.gds",
+		"dir::../../gds/ram_5x32.gds"
+	],
+
+	"EXTRA_LIBS": [
+		"dir::../../lib/manchester_baby.lib",
+		"dir::../../lib/ram_5x32.lib"
+	],
+
 	"EXTRA_SPEFS": [
+		"manchester_baby",
+		"dir::../../spef/multicorner/manchester_baby.min.spef",
+		"dir::../../spef/multicorner/manchester_baby.nom.spef",
+		"dir::../../spef/multicorner/manchester_baby.max.spef",
+		"ram_5x32",
+		"dir::../../spef/multicorner/ram_5x32.min.spef",
+		"dir::../../spef/multicorner/ram_5x32.nom.spef",
+		"dir::../../spef/multicorner/ram_5x32.max.spef"
+	],
+
+	"_comment_EXTRA_LEFS": "dir::../../lef/user_proj_example.lef",
+	"_comment_EXTRA_GDS_FILES": "dir::../../gds/user_proj_example.gds",
+	"_comment_EXTRA_LIBS": "dir::../../lib/user_proj_example.lib",
+	"_comment_EXTRA_SPEFS": [
 		"user_proj_example",
 		"dir::../../spef/multicorner/user_proj_example.min.spef",
 		"dir::../../spef/multicorner/user_proj_example.nom.spef",

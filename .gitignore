@@ -15,15 +15,15 @@ sim_build
 results.xml
 
 # temporarily ignore
-def/
-gds/
-lef/
-lib/
-mag/
-maglef/
-sdc/
-sdf/
-signoff/
-spef/
-spi/
-verilog/
+# def/
+# gds/
+# lef/
+# lib/
+# mag/
+# maglef/
+# sdc/
+# sdf/
+# signoff/
+# spef/
+# spi/
+# verilog/
