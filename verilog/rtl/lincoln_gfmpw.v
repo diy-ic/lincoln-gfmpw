@@ -44,7 +44,7 @@ module lincoln_gfmpw (
 
     manchester_baby manchester_baby (
         `ifdef USER_POWER_PINS
-            .vdd(vdd), .vss(vss)
+            .vdd(vdd), .vss(vss),
         `endif
         .clock(wb_clk_i), .reset_i(io_in[0]),
         .ram_data_i(w_baby_ram_data_o), .ram_data_o(w_baby_ram_data_i),
@@ -54,7 +54,7 @@ module lincoln_gfmpw (
 
     ram_5x32 ram_block (
         `ifdef USER_POWER_PINS
-            .vdd(vdd), .vss(vss)
+            .vdd(vdd), .vss(vss),
         `endif
         .clk_i(w_baby_ram_clk), .address_i(w_baby_ram_addr[4:0]),
         .data_i(w_baby_ram_data_i), .data_o(w_baby_ram_data_o)

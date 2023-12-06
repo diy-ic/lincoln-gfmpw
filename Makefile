@@ -113,8 +113,12 @@ simenv:
 simenv-cocotb:
 	docker pull efabless/dv:cocotb
 
+# .PHONY: setup
+# setup: check_dependencies install check-env install_mcw openlane pdk-with-volare precheck setup-timing-scripts
 .PHONY: setup
-setup: check_dependencies install check-env install_mcw openlane pdk-with-volare precheck setup-timing-scripts
+setup:
+	$(eval $(exit 0))
+
 
 # Openlane
 blocks=$(shell cd openlane && find * -maxdepth 0 -type d)

@@ -1,7 +1,7 @@
 magic
 tech gf180mcuD
 magscale 1 5
-timestamp 1701901575
+timestamp 1701904273
 << obsm1 >>
 rect 672 1538 20328 19305
 << metal2 >>
@@ -334,7 +334,7 @@ string FIXED_BBOX 0 0 21000 21000
 string LEFclass BLOCK
 string LEFview TRUE
 string GDS_END 1568720
-string GDS_FILE /home/kris/repos/diy-ic/lincoln-gfmpw/openlane/manchester-baby/runs/23_12_06_22_24/results/signoff/manchester_baby.magic.gds
+string GDS_FILE /home/kris/repos/diy-ic/lincoln-gfmpw/openlane/manchester-baby/runs/23_12_06_23_08/results/signoff/manchester_baby.magic.gds
 string GDS_START 366846
 << end >>
 
