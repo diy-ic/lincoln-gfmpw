@@ -8,4 +8,6 @@
 *.gtkw
 *.nl.v
 
-dependencies/*
+__pycache__
+sim_build
+dependencies

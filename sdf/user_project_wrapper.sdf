@@ -1,0 +1,23 @@
+(DELAYFILE
+ (SDFVERSION "3.0")
+ (DESIGN "user_project_wrapper")
+ (DATE "Thu Dec  7 20:02:59 2023")
+ (VENDOR "Parallax")
+ (PROGRAM "STA")
+ (VERSION "2.4.0")
+ (DIVIDER .)
+ (TIMESCALE 1ns)
+ (CELL
+  (CELLTYPE "user_project_wrapper")
+  (INSTANCE)
+  (DELAY
+   (ABSOLUTE
+    (INTERCONNECT io_in[10] titan_instance.spi_pico_i (0.004:0.004:0.004))
+    (INTERCONNECT io_in[8] titan_instance.spi_clock_i (0.012:0.012:0.012))
+    (INTERCONNECT io_in[9] titan_instance.spi_cs_i (0.008:0.008:0.008))
+    (INTERCONNECT wb_clk_i titan_instance.sys_clock_i (0.251:0.251:0.251))
+    (INTERCONNECT titan_instance.spi_poci_o io_out[8] (0.051:0.051:0.051))
+   )
+  )
+ )
+)
