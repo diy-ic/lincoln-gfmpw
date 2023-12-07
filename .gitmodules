@@ -1,0 +1,4 @@
+[submodule "openlane/manchester-baby"]
+	path = openlane/manchester-baby
+	url = https://github.com/diy-ic/openlane-manchester-baby
+	branch = gfmpw
