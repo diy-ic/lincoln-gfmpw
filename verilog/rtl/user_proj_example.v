@@ -45,15 +45,15 @@ module user_proj_example #(
 
     // Wishbone Slave ports (WB MI A)
     input wb_clk_i,
-    input wb_rst_i,
-    input wbs_stb_i,
-    input wbs_cyc_i,
-    input wbs_we_i,
-    input [3:0] wbs_sel_i,
-    input [31:0] wbs_dat_i,
-    input [31:0] wbs_adr_i,
-    output wbs_ack_o,
-    output [31:0] wbs_dat_o,
+    // input wb_rst_i,
+    // input wbs_stb_i,
+    // input wbs_cyc_i,
+    // input wbs_we_i,
+    // input [3:0] wbs_sel_i,
+    // input [31:0] wbs_dat_i,
+    // input [31:0] wbs_adr_i,
+    // output wbs_ack_o,
+    // output [31:0] wbs_dat_o,
 
     // Logic Analyzer Signals
     input  [63:0] la_data_in,
@@ -66,27 +66,28 @@ module user_proj_example #(
     output [BITS-1:0] io_oeb,
 
     // IRQ
-    output [2:0] irq
+    // output [2:0] irq
 );
 
-    assign wbs_ack_o = 'h0;
-    assign wbs_dat_o = 'h0;
+    // assign wbs_ack_o = 'h0;
+    // assign wbs_dat_o = 'h0;
     assign la_data_out[63:1] = 'h0;
-    assign io_out[BITS-1:1] = 'h0;
+    // assign io_out[BITS-1:1] = 'h0;
+    assign io_out = 'h0;
     assign io_oeb = 'h0;
-    assign irq = 'h0;
+    // assign irq = 'h0;
 
-    titan titan_instance (
-    `ifdef USE_POWER_PINS
-	    .vdd(vdd),	// User area 1 1.8V power
-	    .vss(vss),	// User area 1 digital ground
-    `endif
-        .sys_clock_i(wb_clk_i),
-        .spi_clock_i(io_in[0]),
-        .spi_cs_i(io_in[1]),
-        .spi_pico_i(io_in[2]),
-        .spi_poci_o(io_out[0])
-    );
+    // titan titan_instance (
+    // `ifdef USE_POWER_PINS
+	//     .vdd(vdd),	// User area 1 1.8V power
+	//     .vss(vss),	// User area 1 digital ground
+    // `endif
+    //     .sys_clock_i(wb_clk_i),
+    //     .spi_clock_i(io_in[0]),
+    //     .spi_cs_i(io_in[1]),
+    //     .spi_pico_i(io_in[2]),
+    //     .spi_poci_o(io_out[0])
+    // );
 
     wire [31:0] w_ram_data_o, w_ram_data_i;
     wire [4:0] w_ram_addr;
@@ -167,41 +168,4 @@ module user_proj_example #(
     // );
 
 endmodule
-
-// module counter #(
-//     parameter BITS = 16
-// )(
-//     input clk,
-//     input reset,
-//     input valid,
-//     input [3:0] wstrb,
-//     input [BITS-1:0] wdata,
-//     input [BITS-1:0] la_write,
-//     input [BITS-1:0] la_input,
-//     output reg ready,
-//     output reg [BITS-1:0] rdata,
-//     output reg [BITS-1:0] count
-// );
-
-//     always @(posedge clk) begin
-//         if (reset) begin
-//             count <= 0;
-//             ready <= 0;
-//         end else begin
-//             ready <= 1'b0;
-//             if (~|la_write) begin
-//                 count <= count + 1;
-//             end
-//             if (valid && !ready) begin
-//                 ready <= 1'b1;
-//                 rdata <= count;
-//                 if (wstrb[0]) count[7:0]   <= wdata[7:0];
-//                 if (wstrb[1]) count[15:8]  <= wdata[15:8];
-//             end else if (|la_write) begin
-//                 count <= la_write & la_input;
-//             end
-//         end
-//     end
-
-// endmodule
 `default_nettype wire
