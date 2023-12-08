@@ -70,16 +70,16 @@ module user_project_wrapper #(
 /* User project is instantiated  here   */
 /*--------------------------------------*/
 
-user_proj_example mprj (
-`ifdef USE_POWER_PINS
-	.vdd(vdd),	// User area 1 1.8V power
-	.vss(vss),	// User area 1 digital ground
-`endif
+    lincoln_gfmpw mprj (
+    `ifdef USE_POWER_PINS
+        .vdd(vdd),	// User area 1 1.8V power
+        .vss(vss),	// User area 1 digital ground
+    `endif
 
     .wb_clk_i(wb_clk_i),
     // .wb_rst_i(wb_rst_i),
 
-    // MGMT SoC Wishbone Slave
+        // MGMT SoC Wishbone Slave
 
     // .wbs_cyc_i(wbs_cyc_i),
     // .wbs_stb_i(wbs_stb_i),
@@ -90,13 +90,13 @@ user_proj_example mprj (
     // .wbs_ack_o(wbs_ack_o),
     // .wbs_dat_o(wbs_dat_o),
 
-    // Logic Analyzer
+        // Logic Analyzer
 
-    .la_data_in(la_data_in),
-    .la_data_out(la_data_out),
-    .la_oenb (la_oenb),
+        .la_data_in(la_data_in),
+        .la_data_out(la_data_out),
+        .la_oenb (la_oenb),
 
-    // IO Pads
+        // IO Pads
 
     .io_in ({io_in[37:30],io_in[7:0]}),
     .io_out({io_out[37:30],io_out[7:0]}),

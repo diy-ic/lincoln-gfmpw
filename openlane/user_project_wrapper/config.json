@@ -4,7 +4,8 @@
 	"STD_CELL_LIBRARY": "gf180mcu_fd_sc_mcu7t5v0",
 	"VERILOG_FILES": [
 		"dir::../../verilog/rtl/defines.v",
-		"dir::../../verilog/rtl/user_project_wrapper.v"
+		"dir::../../verilog/rtl/user_project_wrapper.v",
+		"dir::../../verilog/rtl/lincoln_gfmpw.v"
 	],
 	"CLOCK_PORT": "wb_clk_i",
 	"_commentCLOCK_NET": "mprj.clk",
@@ -32,6 +33,20 @@
 	],
 
 	"EXTRA_SPEFS": [
+		"manchester_baby",
+		"dir::../../spef/multicorner/manchester_baby.min.spef",
+		"dir::../../spef/multicorner/manchester_baby.nom.spef",
+		"dir::../../spef/multicorner/manchester_baby.max.spef",
+		"ram_5x32",
+		"dir::../../spef/multicorner/ram_5x32.min.spef",
+		"dir::../../spef/multicorner/ram_5x32.nom.spef",
+		"dir::../../spef/multicorner/ram_5x32.max.spef"
+	],
+
+	"_comment_EXTRA_LEFS": "dir::../../lef/user_proj_example.lef",
+	"_comment_EXTRA_GDS_FILES": "dir::../../gds/user_proj_example.gds",
+	"_comment_EXTRA_LIBS": "dir::../../lib/user_proj_example.lib",
+	"_comment_EXTRA_SPEFS": [
 		"user_proj_example",
 		"dir::../../spef/multicorner/user_proj_example.min.spef",
 		"dir::../../spef/multicorner/user_proj_example.nom.spef",
