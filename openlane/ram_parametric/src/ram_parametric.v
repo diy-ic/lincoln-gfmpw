@@ -1,12 +1,12 @@
-module ram_5x32 # (
+module ram_parametric # (
     parameter ADDRESS_WIDTH = 5,
     parameter DATA_WIDTH = 32,
     parameter MEMORY_DEPTH = 32
 ) (
-    `ifdef USE_POWER_PINS
-        inout vdd,		// User area 5.0V supply
-        inout vss,		// User area ground
-    `endif
+    // `ifdef USE_POWER_PINS
+    //     inout vdd,		// User area 5.0V supply
+    //     inout vss,		// User area ground
+    // `endif
     input clk_i,
     input we_i, // write enable
     input [ADDRESS_WIDTH-1:0] address_i,

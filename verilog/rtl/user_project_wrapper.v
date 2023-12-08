@@ -70,53 +70,93 @@ module user_project_wrapper #(
 /* User project is instantiated  here   */
 /*--------------------------------------*/
 
-    lincoln_gfmpw mprj (
-    `ifdef USE_POWER_PINS
-        .vdd(vdd),	// User area 1 1.8V power
-        .vss(vss),	// User area 1 digital ground
-    `endif
-
-    .wb_clk_i(wb_clk_i),
-    // .wb_rst_i(wb_rst_i),
-
-        // MGMT SoC Wishbone Slave
-
-    // .wbs_cyc_i(wbs_cyc_i),
-    // .wbs_stb_i(wbs_stb_i),
-    // .wbs_we_i(wbs_we_i),
-    // .wbs_sel_i(wbs_sel_i),
-    // .wbs_adr_i(wbs_adr_i),
-    // .wbs_dat_i(wbs_dat_i),
-    // .wbs_ack_o(wbs_ack_o),
-    // .wbs_dat_o(wbs_dat_o),
-
-        // Logic Analyzer
-
-        .la_data_in(la_data_in),
-        .la_data_out(la_data_out),
-        .la_oenb (la_oenb),
-
-        // IO Pads
-
-    .io_in ({io_in[37:30],io_in[7:0]}),
-    .io_out({io_out[37:30],io_out[7:0]}),
-    .io_oeb({io_oeb[37:30],io_oeb[7:0]}),
-
-    // IRQ
-    // .irq(user_irq)
-);
-
 titan titan_instance (
 `ifdef USE_POWER_PINS
 	.vdd(vdd),	// User area 1 1.8V power
 	.vss(vss),	// User area 1 digital ground
 `endif
     .sys_clock_i(wb_clk_i),
-    .spi_clock_i(io_in[36]),
-    .spi_cs_i(io_in[37]),
-    .spi_pico_i(io_in[35]),
-    .spi_poci_o(io_out[36])
+    .spi_clock_i(io_in[0]),
+    .spi_cs_i(io_in[1]),
+    .spi_pico_i(io_in[2]),
+    .spi_poci_o(io_out[0])
 );
+
+wire [31:0] w_ram_data_i, w_ram_data_o;
+wire w_ram_we, w_ram_clk;
+wire [4:0] w_ram_addr;
+
+ram_5x32 ram_block (
+`ifdef USE_POWER_PINS
+	.vdd(vdd),	// User area 1 1.8V power
+	.vss(vss),	// User area 1 digital ground
+`endif
+    .clk_i(w_ram_clk),
+    .we_i(w_ram_we),
+    .address_i(w_ram_addr),
+    .data_i(w_ram_data_i),
+    .data_o(w_ram_data_o)
+);
+
+manchester_baby manchester_baby_instance (
+`ifdef USE_POWER_PINS
+	.vdd(vdd),	// User area 1 1.8V power
+	.vss(vss),	// User area 1 digital ground
+`endif
+    .clock(wb_clk_i),
+    .reset_i(wb_rst_i),
+    .ram_data_i(w_ram_data_o),
+    .ram_data_o(w_ram_data_i),
+    .ram_addr_o(w_ram_addr),
+    .ram_rw_en_o(w_ram_we),
+    .stop_lamp_o(io_out[1]),
+    .logisim_clock_tree_0_out(w_ram_clk)
+);
+
+
+
+endmodule	// user_project_wrapper
+`default_nettype wire
+
+
+
+//     lincoln_gfmpw mprj (
+//     `ifdef USE_POWER_PINS
+//         .vdd(vdd),	// User area 1 1.8V power
+//         .vss(vss),	// User area 1 digital ground
+//     `endif
+
+//     .wb_clk_i(wb_clk_i),
+//     // .wb_rst_i(wb_rst_i),
+
+//         // MGMT SoC Wishbone Slave
+
+//     // .wbs_cyc_i(wbs_cyc_i),
+//     // .wbs_stb_i(wbs_stb_i),
+//     // .wbs_we_i(wbs_we_i),
+//     // .wbs_sel_i(wbs_sel_i),
+//     // .wbs_adr_i(wbs_adr_i),
+//     // .wbs_dat_i(wbs_dat_i),
+//     // .wbs_ack_o(wbs_ack_o),
+//     // .wbs_dat_o(wbs_dat_o),
+
+//         // Logic Analyzer
+
+//         .la_data_in(la_data_in),
+//         .la_data_out(la_data_out),
+//         .la_oenb (la_oenb),
+
+//         // IO Pads
+
+//     .io_in ({io_in[37:30],io_in[7:0]}),
+//     .io_out({io_out[37:30],io_out[7:0]}),
+//     .io_oeb({io_oeb[37:30],io_oeb[7:0]}),
+
+//     // IRQ
+//     // .irq(user_irq)
+// );
+// assign io_out[38:1] = 'h0;
+// assign user_irq = 'h0;
 
 // titan titan_instance (
 // `ifdef USE_POWER_PINS
@@ -127,7 +167,3 @@ titan titan_instance (
 //     .io_in(io_in),
 //     .io_out(io_out)
 // );
-
-endmodule	// user_project_wrapper
-
-`default_nettype wire
