@@ -1,5 +1,9 @@
 // example only
 module titan (
+`ifdef USE_POWER_PINS
+    inout vdd,		// User area 5.0V supply
+    inout vss,		// User area ground
+`endif
 	input wire sys_clock_i,
 	input wire spi_clock_i,
 	input wire spi_cs_i,     // chip select

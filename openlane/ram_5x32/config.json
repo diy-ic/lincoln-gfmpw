@@ -1,0 +1,22 @@
+{
+    "PDK": "gf180mcuD",
+	"STD_CELL_LIBRARY": "gf180mcu_fd_sc_mcu7t5v0",
+    "DESIGN_NAME": "ram_5x32",
+    "VERILOG_FILES": [
+        "dir::src/ram_5x32.v"
+    ],
+    "CLOCK_PORT": "clk_i",
+    "CLOCK_PERIOD": 25,
+    "SYNTH_USE_PG_PINS_DEFINES": "USE_POWER_PINS",
+    "DESIGN_IS_CORE": 0,
+    "_comment_DIE_AREA": "0 0 100 100",
+    "FP_SIZING": "relative",
+
+    "RT_MAX_LAYER": "Metal4",
+    "VDD_NETS": [
+        "vdd"
+    ],
+    "GND_NETS": [
+        "vss"
+    ]
+}

@@ -1,25 +1,33 @@
 {
-    "PDK": "gf180mcuD",
+	"PDK": "gf180mcuD",
 	"STD_CELL_LIBRARY": "gf180mcu_fd_sc_mcu7t5v0",
-    "DESIGN_NAME": "titan",
-    "VERILOG_FILES": [
+	"DESIGN_NAME": "titan",
+	"VERILOG_FILES": [
         "dir::src/simple_neuron.sv",
         "dir::src/core_interface.sv",
         "dir::src/instruction_handler.sv",
         "dir::src/spi_interface.sv",
         "dir::src/titan.sv"
-    ],
-    "CLOCK_PORT": "clock",
-    "CLOCK_PERIOD": "24.0",
-
-    "DESIGN_IS_CORE": false,
-    "FP_SIZING": "relative",
-
-    "RT_MAX_LAYER": "Metal4",
-    "VDD_NETS": [
-        "vdd"
-    ],
-    "GND_NETS": [
-        "vss"
-    ]
+	],
+	"DESIGN_IS_CORE": 0,
+	"CLOCK_PORT": "sys_clock_i",
+	"CLOCK_PERIOD": 25,
+	"PL_RESIZER_HOLD_SLACK_MARGIN": 0.8,
+	"GLB_RESIZER_HOLD_SLACK_MARGIN": 0.8,
+	"FP_SIZING": "relative",
+	"_commentDIE_AREA": "0 0 500 500",
+	"FP_CORE_UTIL": 40,
+	"PL_BASIC_PLACEMENT": 0,
+	"MAX_FANOUT_CONSTRAINT": 4,
+	"RT_MAX_LAYER": "Metal4",
+	"VDD_NETS": [
+		"vdd"
+	],
+	"GND_NETS": [
+		"vss"
+	],
+    "_commentBASE_SDC_FILE": "dir::base_user_proj_example.sdc",
+	"RUN_HEURISTIC_DIODE_INSERTION": 1,
+	"RUN_CVC": 1,
+	"QUIT_ON_LINTER_ERRORS": 0
 }

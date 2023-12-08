@@ -27,3 +27,7 @@ signoff/
 spef/
 spi/
 verilog/
+
+__pycache__
+sim_build
+dependencies

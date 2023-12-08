@@ -4,3 +4,4 @@
 [submodule "openlane/mos6502/logisim/circuit/mos6502-logisim"]
 	path = openlane/mos6502/logisim/circuit/mos6502-logisim
 	url = https://github.com/LAMB-TARK/MOS-6502-Logisim-Evolution/
+	branch = gfmpw
