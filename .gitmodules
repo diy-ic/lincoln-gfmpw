@@ -1,7 +1,0 @@
-[submodule "openlane/manchester-baby"]
-	path = openlane/manchester-baby
-	url = https://arkis-s@github.com/diy-ic/openlane-manchester-baby
-[submodule "openlane/mos6502/logisim/circuit/mos6502-logisim"]
-	path = openlane/mos6502/logisim/circuit/mos6502-logisim
-	url = https://github.com/LAMB-TARK/MOS-6502-Logisim-Evolution/
-	branch = gfmpw
