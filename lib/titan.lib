@@ -25,28 +25,108 @@ library (titan) {
   nom_temperature                : 25.0;
   nom_voltage                    : 5.00;
 
+  lu_table_template(template_1) {
+    variable_1 : total_output_net_capacitance;
+    index_1 ("0.00100,  0.00595,  0.02332,  0.05650,  0.10820,  0.18070,  0.27610,  0.39640,  0.54310,  0.71810");
+  }
 
   cell ("titan") {
     interface_timing : true;
     pin("spi_clock_i") {
       direction : input;
-      capacitance : 0.0036;
+      capacitance : 0.0088;
+      timing() {
+        related_pin : "sys_clock_i";
+        timing_type : hold_rising;
+	rise_constraint(scalar) {
+          values("-0.25627");
+	}
+	fall_constraint(scalar) {
+          values("-0.16855");
+	}
+      }
+      timing() {
+        related_pin : "sys_clock_i";
+        timing_type : setup_rising;
+	rise_constraint(scalar) {
+          values("0.51579");
+	}
+	fall_constraint(scalar) {
+          values("0.48182");
+	}
+      }
     }
     pin("spi_cs_i") {
       direction : input;
-      capacitance : 0.0060;
+      capacitance : 0.0036;
+      timing() {
+        related_pin : "sys_clock_i";
+        timing_type : hold_rising;
+	rise_constraint(scalar) {
+          values("-0.16416");
+	}
+	fall_constraint(scalar) {
+          values("-0.09447");
+	}
+      }
+      timing() {
+        related_pin : "sys_clock_i";
+        timing_type : setup_rising;
+	rise_constraint(scalar) {
+          values("0.42293");
+	}
+	fall_constraint(scalar) {
+          values("0.40955");
+	}
+      }
     }
     pin("spi_pico_i") {
       direction : input;
-      capacitance : 0.0060;
+      capacitance : 0.0036;
+      timing() {
+        related_pin : "sys_clock_i";
+        timing_type : hold_rising;
+	rise_constraint(scalar) {
+          values("-0.25255");
+	}
+	fall_constraint(scalar) {
+          values("-0.20764");
+	}
+      }
+      timing() {
+        related_pin : "sys_clock_i";
+        timing_type : setup_rising;
+	rise_constraint(scalar) {
+          values("0.51951");
+	}
+	fall_constraint(scalar) {
+          values("0.52169");
+	}
+      }
     }
     pin("spi_poci_o") {
       direction : output;
       capacitance : 0.0000;
+      timing() {
+        related_pin : "sys_clock_i";
+        timing_type : rising_edge;
+	cell_rise(template_1) {
+          values("0.96744,0.98524,1.04089,1.14278,1.30257,1.52749,1.82396,2.19696,2.65222,3.19696");
+	}
+	rise_transition(template_1) {
+          values("0.06672,0.09121,0.17886,0.35663,0.64082,1.04123,1.56774,2.22926,3.03851,4.00226");
+	}
+	cell_fall(template_1) {
+          values("0.90473,0.92303,0.97333,1.05034,1.15703,1.30044,1.48773,1.72394,2.01194,2.35494");
+	}
+	fall_transition(template_1) {
+          values("0.07234,0.09137,0.14640,0.24381,0.39900,0.62739,0.93718,1.32798,1.80800,2.38196");
+	}
+      }
     }
     pin("sys_clock_i") {
       direction : input;
-      capacitance : 0.0052;
+      capacitance : 0.0724;
     }
     pin("vdd") {
       direction : input;

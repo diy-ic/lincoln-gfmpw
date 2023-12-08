@@ -9,10 +9,22 @@ module titan (
 	input wire spi_cs_i,     // chip select
 	input wire spi_pico_i,   // peripheral in, controller out - rx from mcu
 	output wire spi_poci_o   // peripheral out, controller in - tx to mcu
+	// input wire wb_clk_i,
+	// input wire [2:0] io_in,
+	// output wire io_out
 );
 
 	logic [7:0] rx_byte_i, tx_byte_o;
-	wire rx_valid_w;
+	// wire rx_valid_w, sys_clock_i, spi_cs_i, spi_pico_i, spi_poci_o;
+
+	// assign sys_clock_i = wb_clk_i;
+	// assign spi_cs_i = io_in[0];
+	// assign spi_clock_i = io_in[1];
+	// assign spi_pico_i = io_in[2];
+	// assign spi_poci_o = io_out[0];
+
+	// assign io_out[38:1] = 'h0;
+
 
 	spi_byte_if spi_interface_cvonk (
 		.sysClk(sys_clock_i), .SCLK(spi_clock_i),
