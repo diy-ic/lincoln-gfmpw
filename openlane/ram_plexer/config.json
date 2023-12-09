@@ -1,0 +1,29 @@
+{
+	"PDK": "gf180mcuD",
+	"STD_CELL_LIBRARY": "gf180mcu_fd_sc_mcu7t5v0",
+	"DESIGN_NAME": "ram_plexer",
+	"VERILOG_FILES": [
+        "dir::src/ram_plexer.v"
+	],
+	"DESIGN_IS_CORE": 0,
+	"CLOCK_PORT": "ram_clk_o",
+	"CLOCK_PERIOD": 25,
+	"SYNTH_EXTRA_MAPPING_FILE": "dir::../../verilog/rtl/pdk_extra/latch_map.v",
+	"_commentQUIT_ON_UNMAPPED_CELLS": 0,
+	"FP_SIZING": "absolute",
+	"DIE_AREA": "0 0 350 350",
+	"FP_CORE_UTIL": 40,
+	"PL_BASIC_PLACEMENT": 0,
+	"MAX_FANOUT_CONSTRAINT": 4,
+	"RT_MAX_LAYER": "Metal4",
+	"VDD_NETS": [
+		"vdd"
+	],
+	"GND_NETS": [
+		"vss"
+	],
+    "_commentBASE_SDC_FILE": "dir::base_user_proj_example.sdc",
+	"RUN_HEURISTIC_DIODE_INSERTION": 1,
+	"RUN_CVC": 1,
+	"QUIT_ON_LINTER_ERRORS": 0
+}
