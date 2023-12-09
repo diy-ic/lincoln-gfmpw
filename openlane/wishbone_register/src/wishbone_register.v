@@ -11,28 +11,30 @@ module wishbone_register # (
     input [3:0] wbs_sel_i,
     input [31:0] wbs_dat_i,
     input [31:0] wbs_adr_i,
+    input [31:0] data_i,
+
     output reg wbs_ack_o,
     output reg [31:0] wbs_dat_o,
-    output wire reg_q_o
+    output wire [31:0] reg_q_o
 );
 
-    reg internal_data;
-    assign reg_q_o = internal_data;
+    reg [31:0] r_data_o;
+    assign reg_q_o = r_data_o;
 
     always @ (posedge wb_clk_i or posedge wb_rst_i) begin
         if (wb_rst_i) begin
-            internal_data <= 'h0;
+            r_data_o <= 'h0;
             wbs_ack_o <= 'h0;
         end else begin
-            wbs_ack_o <= 'h1;
 
             if (wbs_stb_i && wbs_adr_i == ADDRESS) begin
-                if (wbs_we_i == 1'b1) begin
-                    internal_data <= wbs_dat_i[0];
-                end else if (wbs_we_i == 1'b0) begin
-                    wbs_dat_o <= internal_data;
-                end 
+                wbs_ack_o <= 'h1;
 
+                if (wbs_we_i == 1'b1) begin
+                    r_data_o <= wbs_dat_i;
+                end else if (wbs_we_i == 1'b0) begin
+                    wbs_dat_o <= data_i;
+                end 
             end
         end
     end
