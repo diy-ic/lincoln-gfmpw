@@ -26,6 +26,7 @@ sdf/
 signoff/
 spef/
 spi/
+verilog/gl
 
 __pycache__
 sim_build
