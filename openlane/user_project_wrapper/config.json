@@ -15,27 +15,31 @@
 		"dir::../../verilog/gl/user_proj_example.v",
 		"dir::../../verilog/gl/titan.v",
 		"dir::../../verilog/gl/manchester_baby.v",
-		"dir::../../verilog/gl/ram_5x32.v"
+		"dir::../../verilog/gl/ram_5x32.v",
+		"dir::../../verilog/gl/mos6502_decoder.v"
 	],
 	"EXTRA_LEFS": [
 		"dir::../../lef/user_proj_example.lef",
 		"dir::../../lef/titan.lef",
 		"dir::../../lef/manchester_baby.lef",
-		"dir::../../lef/ram_5x32.lef"
+		"dir::../../lef/ram_5x32.lef",
+		"dir::../../lef/mos6502_decoder.lef"
 	],
 
 	"EXTRA_GDS_FILES": [
 		"dir::../../gds/user_proj_example.gds",
 		"dir::../../gds/titan.gds",
 		"dir::../../gds/manchester_baby.gds",
-		"dir::../../gds/ram_5x32.gds"
+		"dir::../../gds/ram_5x32.gds",
+		"dir::../../gds/mos6502_decoder.gds"
 	],
 
 	"EXTRA_LIBS": [
 		"dir::../../lib/user_proj_example.lib",
 		"dir::../../lib/titan.lib",
 		"dir::../../lib/manchester_baby.lib",
-		"dir::../../lib/ram_5x32.lib"
+		"dir::../../lib/ram_5x32.lib",
+		"dir::../../lib/mos6502_decoder.lib"
 	],
 
 	"EXTRA_SPEFS": [
@@ -50,12 +54,17 @@
 		"ram_5x32",
 		"dir::../../spef/multicorner/ram_5x32.min.spef",
 		"dir::../../spef/multicorner/ram_5x32.nom.spef",
-		"dir::../../spef/multicorner/ram_5x32.max.spef"
+		"dir::../../spef/multicorner/ram_5x32.max.spef",
+		"mos6502_decoder",
+		"dir::../../spef/multicorner/mos6502_decoder.min.spef",
+		"dir::../../spef/multicorner/mos6502_decoder.nom.spef",
+		"dir::../../spef/multicorner/mos6502_decoder.max.spef"
 	],
 
 	"FP_PDN_MACRO_HOOKS": [
 		"titan_instance vdd vss vdd vss,",
 		"manchester_baby_instance vdd vss vdd vss,",
+		"mos_decoder vdd vss vdd vss,",
 		"ram_block vdd vss vdd vss"
 	],
 

@@ -113,7 +113,16 @@ manchester_baby manchester_baby_instance (
     .logisim_clock_tree_0_out(w_ram_clk)
 );
 
+mos6502_decoder mos_decoder (
+`ifdef USE_POWER_PINS
+	.vdd(vdd),	// User area 1 1.8V power
+	.vss(vss),	// User area 1 digital ground
+`endif
+    .instruction_i(io_in[10:3]),
 
+    //                      65     64   63        0
+    .decoded_instruction_o({io_out[3:2], la_data_out})
+);
 
 endmodule	// user_project_wrapper
 `default_nettype wire

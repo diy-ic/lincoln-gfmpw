@@ -1,4 +1,8 @@
 module mos6502_decoder (
+`ifdef USE_POWER_PINS
+    inout vdd,		// User area 5.0V supply
+    inout vss,		// User area ground
+`endif
     input [7:0] instruction_i,
     output [65:0] decoded_instruction_o
 );
