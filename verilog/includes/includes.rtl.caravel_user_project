@@ -1,5 +1,28 @@
 # Caravel user project includes
 -v $(USER_PROJECT_VERILOG)/rtl/user_project_wrapper.v	     
--v $(USER_PROJECT_VERILOG)/rtl/user_proj_example.v
-
+-v $(USER_PROJECT_VERILOG)/../openlane/manchester-baby/logisim/hdl/base/logisimTickGenerator.v
+-v $(USER_PROJECT_VERILOG)/../openlane/manchester-baby/logisim/hdl/base/LogisimClockComponent.v
+-v $(USER_PROJECT_VERILOG)/../openlane/manchester-baby/logisim/hdl/gates/AND_GATE.v
+-v $(USER_PROJECT_VERILOG)/../openlane/manchester-baby/logisim/hdl/gates/OR_GATE_BUS_5_INPUTS.v
+-v $(USER_PROJECT_VERILOG)/../openlane/manchester-baby/logisim/hdl/gates/OR_GATE_3_INPUTS.v
+-v $(USER_PROJECT_VERILOG)/../openlane/manchester-baby/logisim/hdl/gates/OR_GATE.v
+-v $(USER_PROJECT_VERILOG)/../openlane/manchester-baby/logisim/hdl/gates/OR_GATE_BUS.v
+-v $(USER_PROJECT_VERILOG)/../openlane/manchester-baby/logisim/hdl/circuit/main.v
+-v $(USER_PROJECT_VERILOG)/../openlane/manchester-baby/logisim/hdl/toplevel/logisimTopLevelShell.v
+-v $(USER_PROJECT_VERILOG)/../openlane/manchester-baby/logisim/hdl/plexers/Decoder_8.v
+-v $(USER_PROJECT_VERILOG)/../openlane/manchester-baby/logisim/hdl/plexers/Multiplexer_bus_2.v
+-v $(USER_PROJECT_VERILOG)/../openlane/manchester-baby/logisim/hdl/arith/Adder.v
+-v $(USER_PROJECT_VERILOG)/../openlane/manchester-baby/logisim/hdl/arith/Comparator.v
+-v $(USER_PROJECT_VERILOG)/../openlane/manchester-baby/logisim/hdl/arith/Subtractor.v
+-v $(USER_PROJECT_VERILOG)/../openlane/manchester-baby/logisim/hdl/memory/REGISTER_FLIP_FLOP.v
+-v $(USER_PROJECT_VERILOG)/../openlane/manchester-baby/logisim/hdl/memory/LogisimCounter.v
+-v $(USER_PROJECT_VERILOG)/../openlane/manchester-baby/logisim/hdl/memory/S_R_FLIPFLOP.v
+-v $(USER_PROJECT_VERILOG)/../openlane/manchester-baby/src/manchester_baby.v
+-v $(USER_PROJECT_VERILOG)/../openlane/titan/src/simple_neuron.sv
+-v $(USER_PROJECT_VERILOG)/../openlane/titan/src/core_interface.sv
+-v $(USER_PROJECT_VERILOG)/../openlane/titan/src/instruction_handler.sv
+-v $(USER_PROJECT_VERILOG)/../openlane/titan/src/spi_interface.sv
+-v $(USER_PROJECT_VERILOG)/../openlane/titan/src/titan.sv
+-v $(USER_PROJECT_VERILOG)/../openlane/ram_parametric/src/ram_parametric.v
+-v $(USER_PROJECT_VERILOG)/../openlane/ram_5x32/ram_5x32.v
  

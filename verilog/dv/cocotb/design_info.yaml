@@ -1,8 +1,8 @@
-CARAVEL_ROOT: /usr/caravel_user_project/caravel
-MCW_ROOT: /usr/caravel_user_project/mgmt_core_wrapper
-PDK: sky130A
-PDK_ROOT: /usr/pdk
-USER_PROJECT_ROOT: /usr/caravel_user_project
+CARAVEL_ROOT: /home/kris/repos/diy-ic/lincoln-gfmpw-1d/caravel
+MCW_ROOT: /home/kris/repos/diy-ic/lincoln-gfmpw-1d/mgmt_core_wrapper
+PDK: gf180mcuD
+PDK_ROOT: /home/kris/repos/diy-ic/lincoln-gfmpw-1d/dependencies/pdks
+USER_PROJECT_ROOT: /home/kris/repos/diy-ic/lincoln-gfmpw-1d
 caravan: false
 clk: 25
 emailto:
