@@ -1,0 +1,27 @@
+{
+	"PDK": "gf180mcuD",
+	"STD_CELL_LIBRARY": "gf180mcu_fd_sc_mcu7t5v0",
+	"DESIGN_NAME": "mos_la_interface",
+	"VERILOG_FILES": [
+        "dir::mos_la_if.v"
+	],
+	"DESIGN_IS_CORE": 0,
+	"RUN_CTS": 0,
+	"_commentFP_PIN_ORDER_CFG": "dir::pin_order.cfg",
+	"FP_SIZING": "absolute",
+	"DIE_AREA": "0 0 150 150",
+	"FP_CORE_UTIL": 40,
+	"PL_BASIC_PLACEMENT": 0,
+	"MAX_FANOUT_CONSTRAINT": 4,
+	"RT_MAX_LAYER": "Metal4",
+	"VDD_NETS": [
+		"vdd"
+	],
+	"GND_NETS": [
+		"vss"
+	],
+    "_commentBASE_SDC_FILE": "dir::base_user_proj_example.sdc",
+	"RUN_HEURISTIC_DIODE_INSERTION": 1,
+	"RUN_CVC": 1,
+	"QUIT_ON_LINTER_ERRORS": 0
+}
