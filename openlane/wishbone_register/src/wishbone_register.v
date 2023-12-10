@@ -40,7 +40,11 @@ module wishbone_register # (
     end
 endmodule
 
-module wishbone_register_mut_addr(
+module wishbone_reg_mut_addr (
+`ifdef USE_POWER_PINS
+    inout vdd,		// User area 5.0V supply
+    inout vss,		// User area ground
+`endif
     // addresses must be after 30 00 00 00 
     // https://caravel-harness.readthedocs.io/en/latest/memory-mapped-io-summary.html
     input wb_clk_i,

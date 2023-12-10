@@ -6,7 +6,7 @@
         "dir::src/wishbone_register.v"
     ],
     "CLOCK_PORT": "wb_clk_i",
-    "CLOCK_PERIOD": "24.0",
+    "CLOCK_PERIOD": 25,
 
     "DESIGN_IS_CORE": false,
     "FP_SIZING": "absolute",
