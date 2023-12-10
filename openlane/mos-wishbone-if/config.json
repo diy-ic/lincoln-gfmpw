@@ -3,7 +3,12 @@
 	"STD_CELL_LIBRARY": "gf180mcu_fd_sc_mcu7t5v0",
 	"DESIGN_NAME": "mos_wishbone_interface",
 	"VERILOG_FILES": [
-		"dir::../wishbone_register/src/wishbone_register.v",
+		"dir::../mos6502/logisim/hdl/gates/AND_GATE.v",
+		"dir::../mos6502/logisim/hdl/gates/OR_GATE.v",
+		"dir::../mos6502/logisim/hdl/plexers/Decoder_16.v",
+		"dir::../mos6502/logisim/hdl/circuit/main.v",
+		"dir::../mos6502/logisim/hdl/toplevel/logisimTopLevelShell.v",
+		"dir::../mos6502/src/mos6502_decoder.v",
         "dir::mos_wishbone_interface.v"
 	],
 	"DESIGN_IS_CORE": 0,
