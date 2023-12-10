@@ -3,8 +3,11 @@ module manchester_baby (
         inout vdd,		// User area 5.0V supply
         inout vss,		// User area ground
     `endif
-    input wire clock,
-    input wire reset_i,
+    input wire sys_clk_i,
+    input wire rst_i,
+    input wire hlt_ext_i, // halt signal external source
+    input wire hlt_int_i, // halt signal internal source
+    output wire hlt_status,
     input [31:0] ram_data_i,
     output [31:0] ram_data_o,
     output wire [4:0] ram_addr_o,
@@ -20,9 +23,14 @@ module manchester_baby (
         end
     `endif
 
+    wire clk;
+    assign hlt_status = (hlt_ext_i || hlt_int_i);
+    assign clk = sys_clk_i && (hlt_ext_i || hlt_int_i);
+
+
     logisimTopLevelShell manchester_baby_instance (
-        .fpgaGlobalClock(clock),
-        .reset_i_0(reset_i),
+        .fpgaGlobalClock(clk),
+        .reset_i_0(rst_i),
         .stop_lamp_o_0(stop_lamp_o),
         .ram_rw_en_o_0(ram_rw_en_o),
         .logisim_clock_tree_0_out(logisim_clock_tree_0_out),
