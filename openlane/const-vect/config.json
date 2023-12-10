@@ -1,0 +1,27 @@
+{
+	"PDK": "gf180mcuD",
+	"STD_CELL_LIBRARY": "gf180mcu_fd_sc_mcu7t5v0",
+	"DESIGN_NAME": "constant_vectors",
+	"VERILOG_FILES": [
+        "dir::const_vect.v"
+	],
+	"DESIGN_IS_CORE": 0,
+	"RUN_CTS": 0,
+	"FP_SIZING": "absolute",
+	"DIE_AREA": "0 0 100 100",
+	"FP_CORE_UTIL": 40,
+	"PL_BASIC_PLACEMENT": 0,
+	"MAX_FANOUT_CONSTRAINT": 4,
+	"SYNTH_USE_PG_PINS_DEFINES": "USE_POWER_PINS",
+	"RT_MAX_LAYER": "Metal4",
+	"VDD_NETS": [
+		"vdd"
+	],
+	"GND_NETS": [
+		"vss"
+	],
+    "_commentBASE_SDC_FILE": "dir::base_user_proj_example.sdc",
+	"RUN_HEURISTIC_DIODE_INSERTION": 1,
+	"RUN_CVC": 1,
+	"QUIT_ON_LINTER_ERRORS": 0
+}
