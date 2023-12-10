@@ -1,4 +1,4 @@
-module mos6502_decoder (
+module mos6502_decoder_dead (
 `ifdef USE_POWER_PINS
     inout vdd,		// User area 5.0V supply
     inout vss,		// User area ground
@@ -47,6 +47,10 @@ module mos6502_decoder (
     // wishbone acknowlege wires coming from the individual registers
     wire w_wbreg_ack_instruction, w_wbreg_ack_decoder_low, w_wbreg_ack_decoder_mid, w_wbreg_ack_decoder_hi;
 
+    wire [31:0] w_internal_wb_data_i;
+
+    assign w_internal_wb_data_i = wbs_dat_i;
+
     always @ (posedge wb_clk_i) begin
         case (wbs_adr_i)
 
@@ -77,7 +81,7 @@ module mos6502_decoder (
     ) wbreg_instr_in (
     .wb_clk_i(wb_clk_i), .wb_rst_i(wb_rst_i), .wbs_stb_i(wbs_stb_i),
     .wbs_cyc_i(wbs_cyc_i), .wbs_we_i(wbs_we_i), .wbs_sel_i(wbs_sel_i),
-    .wbs_dat_i(wbs_dat_i), .wbs_adr_i(wbs_adr_i), 
+    .wbs_dat_i(w_internal_wb_data_i), .wbs_adr_i(wbs_adr_i), 
     
     .wbs_ack_o(w_wbreg_ack_instruction),
     .wbs_dat_o(w_wb_dat_wbreg_instruction), 
@@ -89,7 +93,7 @@ module mos6502_decoder (
     ) wbreg_decoder_low (
     .wb_clk_i(wb_clk_i), .wb_rst_i(wb_rst_i), .wbs_stb_i(wbs_stb_i),
     .wbs_cyc_i(wbs_cyc_i), .wbs_we_i(wbs_we_i), .wbs_sel_i(wbs_sel_i),
-    .wbs_dat_i(wbs_dat_i), .wbs_adr_i(wbs_adr_i), 
+    .wbs_dat_i(w_internal_wb_data_i), .wbs_adr_i(wbs_adr_i), 
     
     .wbs_ack_o(w_wbreg_ack_decoder_low),
     .wbs_dat_o(w_wb_dat_wbreg_decoder_low), 
@@ -101,7 +105,7 @@ module mos6502_decoder (
     ) wbreg_decoder_mid (
     .wb_clk_i(wb_clk_i), .wb_rst_i(wb_rst_i), .wbs_stb_i(wbs_stb_i),
     .wbs_cyc_i(wbs_cyc_i), .wbs_we_i(wbs_we_i), .wbs_sel_i(wbs_sel_i),
-    .wbs_dat_i(wbs_dat_i), .wbs_adr_i(wbs_adr_i), 
+    .wbs_dat_i(w_internal_wb_data_i), .wbs_adr_i(wbs_adr_i), 
     
     .wbs_ack_o(w_wbreg_ack_decoder_mid),
     .wbs_dat_o(w_wb_dat_wbreg_decoder_mid), 
@@ -113,7 +117,7 @@ module mos6502_decoder (
     ) wbreg_decoder_hi (
     .wb_clk_i(wb_clk_i), .wb_rst_i(wb_rst_i), .wbs_stb_i(wbs_stb_i),
     .wbs_cyc_i(wbs_cyc_i), .wbs_we_i(wbs_we_i), .wbs_sel_i(wbs_sel_i),
-    .wbs_dat_i(wbs_dat_i), .wbs_adr_i(wbs_adr_i), 
+    .wbs_dat_i(w_internal_wb_data_i), .wbs_adr_i(wbs_adr_i), 
     
     .wbs_ack_o(w_wbreg_ack_decoder_hi),
     .wbs_dat_o(w_wb_dat_wbreg_decoder_hi), 
@@ -129,7 +133,7 @@ module mos6502_decoder (
 endmodule
 
 
-module mos6502_decoder_wrapper (
+module mos6502_decoder (
 // `ifdef USE_POWER_PINS
 //     inout vdd,		// User area 5.0V supply
 //     inout vss,		// User area ground
