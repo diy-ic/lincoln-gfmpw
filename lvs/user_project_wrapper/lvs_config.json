@@ -27,6 +27,8 @@
         "$UPRJ_ROOT/verilog/gl/titan.v",
 		"$UPRJ_ROOT/verilog/gl/ram_5x32.v",
         "$UPRJ_ROOT/verilog/gl/manchester_baby.v",
+        "$UPRJ_ROOT/verilog/gl/mos_la_interface.v",
+        "$UPRJ_ROOT/verilog/gl/mos6502_decoder.v",
 
         "$UPRJ_ROOT/verilog/gl/$TOP_SOURCE.v"
     ],
