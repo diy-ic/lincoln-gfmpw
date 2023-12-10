@@ -7,6 +7,7 @@
         "dir::mos_wishbone_interface.v"
 	],
 	"DESIGN_IS_CORE": 0,
+	"RUN_CTS": 1,
 	"CLOCK_PORT": "wb_clk_i",
 	"CLOCK_PERIOD": 25,
 	"_commentPL_RESIZER_HOLD_SLACK_MARGIN": 0.8,
@@ -24,7 +25,7 @@
 	"GND_NETS": [
 		"vss"
 	],
-    "_commentBASE_SDC_FILE": "dir::base_user_proj_example.sdc",
+    "BASE_SDC_FILE": "dir::base_user_proj_example.sdc",
 	"RUN_HEURISTIC_DIODE_INSERTION": 1,
 	"RUN_CVC": 1,
 	"QUIT_ON_LINTER_ERRORS": 0
