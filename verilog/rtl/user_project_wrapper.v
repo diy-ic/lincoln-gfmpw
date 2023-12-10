@@ -85,6 +85,7 @@ wire [31:0] w_decoded_muxed;
 assign la_data_out[31:0] = w_decoded_muxed;
 // wire [7:0] w_instruction; // unused
 
+// decoder connected to logic analyser
 mos6502_decoder mos_decoder (
 `ifdef USE_POWER_PINS
     .vdd(vdd),
@@ -102,6 +103,39 @@ mos_la_interface mos_la_mux (
     .decoder_result_i(w_decoded_instruction),
     .sel(io_in[1:0]),
     .decoder_bytes_o(w_decoded_muxed)
+);
+// ----
+
+// decoder connected to wishbone
+wire [65:0] w_wb_decoded_instruction;
+wire [7:0] w_wb_decoder_instruction;
+
+// mos6502_decoder mos_decoder_wb (
+// `ifdef USE_POWER_PINS
+//     .vdd(vdd),
+//     .vss(vss),
+// `endif
+//     .instruction_i(w_wb_decoder_instruction),
+//     .decoded_instruction_o(w_wb_decoded_instruction)
+// );
+
+mos_wishbone_interface mos_decoder_wb (
+`ifdef USE_POWER_PINS
+    .vdd(vdd),
+    .vss(vss),
+`endif   
+    .wb_clk_i(wb_clk_i),
+    .wb_rst_i(wb_rst_i),
+    .wbs_stb_i(wbs_stb_i),
+    // .wbs_cyc_i(wbs_cyc_i), // removed
+    .wbs_we_i(wbs_we_i),
+    // .wbs_sel_i(wbs_sel_i), // removed
+    .wbs_dat_i(wbs_dat_i),
+    .wbs_adr_i(wbs_adr_i),
+    .wbs_ack_o(wbs_ack_o),
+    .wbs_dat_o(wbs_dat_o)
+    // .decoder_result_i(w_wb_decoded_instruction), // 66 bits
+    // .decoder_instruction_o(w_wb_decoder_instruction) // 8 bits
 );
 
 // ------ MANCHESTER BABY + SUPPORTING HARDWARE ------

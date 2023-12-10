@@ -8,12 +8,10 @@
 	],
 	"CLOCK_PORT": "wb_clk_i",
 	"CLOCK_PERIOD": 25,
+	"RUN_KLAYOUT_XOR": 0,
+	"RUN_MAGIC_DRC": 0,
+	"_commentPL_MACRO_HALO": "100 100",
 	"_commentPL_RESIZER_HOLD_SLACK_MARGIN": 0.8,
-	"_commentGLB_RESIZER_HOLD_SLACK_MARGIN": 0.8,
-	"_commentPL_RESIZER_SETUP_MAX_BUFFER_PERCENT": 90,
-	"_commentGLB_RESIZER_SETUP_MAX_BUFFER_PERCENT": 70,
-	"_commentPL_RESIZER_ALLOW_SETUP_VIOS": 1,
-	"_commentGLB_RESIZER_ALLOW_SETUP_VIOS": 1,
 	"MACRO_PLACEMENT_CFG": "dir::macro.cfg",
 	"VERILOG_FILES_BLACKBOX": [
 		"dir::../../verilog/gl/user_proj_example.v",
@@ -98,7 +96,12 @@
 		"ram_plexer",
 		"dir::../../spef/multicorner/ram_plexer.min.spef",
 		"dir::../../spef/multicorner/ram_plexer.nom.spef",
-		"dir::../../spef/multicorner/ram_plexer.max.spef"
+		"dir::../../spef/multicorner/ram_plexer.max.spef",
+		"mos_wishbone_interface",
+		"dir::../../spef/multicorner/mos_wishbone_interface.min.spef",
+		"dir::../../spef/multicorner/mos_wishbone_interface.nom.spef",
+		"dir::../../spef/multicorner/mos_wishbone_interface.max.spef"
+		
 		],
 	"FP_PDN_MACRO_HOOKS": [
 		"mos_la_mux vdd vss vdd vss,",
@@ -108,11 +111,12 @@
 		"spi_ram_interface vdd vss vdd vss,",
 		"ram_plex vdd vss vdd vss,",
 		"consts vdd vss vdd vss,",
-		"titan_instance vdd vss vdd vss"
-
+		"titan_instance vdd vss vdd vss,",
+		"mos_decoder_wb vdd vss vdd vss"
 	],
 
 	"QUIT_ON_SYNTH_CHECKS": 0,
+	"QUIT_ON_LINTER_ERRORS": 1,
 	"FP_PDN_CHECK_NODES": 0,
 	"SYNTH_ELABORATE_ONLY": 1,
 	"PL_RANDOM_GLB_PLACEMENT": 1,
