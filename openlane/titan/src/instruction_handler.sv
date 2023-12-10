@@ -8,6 +8,7 @@ module instruction_handler # (
 ) (
     input wire clk_i,
     input wire spi_rx_valid_i,
+    input wire rst_i,
     input wire [7:0] spi_rx_byte_i,
     input wire [VALUE_WIDTH-1:0] result_i,
     input wire [VALUE_WIDTH-1:0] stream_i,
@@ -22,8 +23,8 @@ module instruction_handler # (
     logic [63:0] rebuilt_instruction;
     logic [ADDRESS_WIDTH-1:0] interrupt_address, stream_address;
 
-    parameter WRITE = 1;
-    parameter READ = 2;
+    parameter WRITE = 1; // '00000001
+    parameter READ = 2;  // '00000010
     parameter STREAM = 3;
     parameter BIND_INTERRUPT = 4;
     parameter BIND_READ_ADDRESS = 5;
@@ -64,98 +65,104 @@ module instruction_handler # (
 	 
     logic [1:0] data_pointer = 2'b01;
 
-    always_ff @ (posedge clk_i) begin
-        // $monitor("(%g) data pointer %h", $time, data_pointer);
+    always_ff @ (posedge clk_i or posedge rst_i) begin
 
-        // might cause issues with adding new instructions because they might be out of range?
-        // if the instruction is WRITE, READ or STREAM (long instruction)
+        if (rst_i) begin
+            expected_byte_count <= 'h0;
+            received_byte_count <= 'h0;
+            data_pointer <= 'h0;
+            instruction_received <= 'h0;
+            current_instruction <= 'h0;
+            rebuilt_instruction <= 'h0;
+        end else begin
 
-        if (spi_rx_valid_i) begin
-            // range needs to include instructions which require multiple bytes
-            // and must be consecutive in the TitanComms enum
-            if (!instruction_received & (spi_rx_byte_i >= WRITE & spi_rx_byte_i <= BIND_WRITE_ADDRESS)) begin
-                // data_pointer <= 1;
+            if (spi_rx_valid_i) begin
+                // range needs to include instructions which require multiple bytes
+                // and must be consecutive in the TitanComms enum
+                if (!instruction_received & (spi_rx_byte_i >= WRITE & spi_rx_byte_i <= BIND_WRITE_ADDRESS)) begin
+                    // data_pointer <= 1;
 
-                // TODO: fix this weird offset issue, lets try and get data_pointer = 0
-                // set datapointer to appropriate value
-                if (spi_rx_byte_i == STREAM) begin
-                    data_pointer <= 2'd0;
-                end else begin
-                    data_pointer <= 2'd1;
-                end
-
-                instruction_received <= 1'b1;
-                current_instruction <= spi_rx_byte_i;
-                received_byte_count <= 8'd1;
-
-                case (spi_rx_byte_i)
-                    WRITE: begin
-                        expected_byte_count <= 8'd8;
+                    // TODO: fix this weird offset issue, lets try and get data_pointer = 0
+                    // set datapointer to appropriate value
+                    if (spi_rx_byte_i == STREAM) begin
+                        data_pointer <= 2'd0;
+                    end else begin
+                        data_pointer <= 2'd1;
                     end
 
-                    READ: begin
-                        expected_byte_count <= 8'd4;
-                    end
+                    instruction_received <= 1'b1;
+                    current_instruction <= spi_rx_byte_i;
+                    received_byte_count <= 8'd1;
 
-                    BIND_INTERRUPT: begin
-                        expected_byte_count <= 8'd4;
-                    end
+                    case (spi_rx_byte_i)
+                        WRITE: begin
+                            expected_byte_count <= 8'd8;
+                        end
 
-                    BIND_READ_ADDRESS: begin
-                        expected_byte_count <= 8'd4;
-                    end
+                        READ: begin
+                            expected_byte_count <= 8'd4;
+                        end
 
-                    BIND_WRITE_ADDRESS: begin
-                        expected_byte_count <= 8'd4;
-                    end
+                        BIND_INTERRUPT: begin
+                            expected_byte_count <= 8'd4;
+                        end
 
-                    STREAM: begin
-                        expected_byte_count <= 8'd5; // 1 byte instruction + 4 bytes to transfer
-                        spi_tx_byte_o <= stream_i[31:24]; // upper most byte
-                        // spi_tx_byte_o <= stream_i[31 - (8*data_pointer) -: 8];
-                    end
+                        BIND_READ_ADDRESS: begin
+                            expected_byte_count <= 8'd4;
+                        end
 
-                    default: begin
-                        expected_byte_count <= 8'hx;
-                    end
-                endcase
+                        BIND_WRITE_ADDRESS: begin
+                            expected_byte_count <= 8'd4;
+                        end
 
-                
-            // otherwise if the instruction is TRANSFER or REPEAT
-            end else if (!instruction_received & (spi_rx_byte_i >= TRANSFER & spi_rx_byte_i <= REPEAT)) begin
-                current_instruction <= spi_rx_byte_i;
+                        STREAM: begin
+                            expected_byte_count <= 8'd5; // 1 byte instruction + 4 bytes to transfer
+                            spi_tx_byte_o <= stream_i[31:24]; // upper most byte
+                            // spi_tx_byte_o <= stream_i[31 - (8*data_pointer) -: 8];
+                        end
 
-                // reset datapointer if we need to send entire thing again
-                if (spi_rx_byte_i == REPEAT) begin
-                    data_pointer <= 2'd1;
+                        default: begin
+                            expected_byte_count <= 8'hx;
+                        end
+                    endcase
+
                     
-                end else if (spi_rx_byte_i == TRANSFER) begin
-                    // https://stackoverflow.com/questions/18067571/indexing-vectors-and-arrays-with
-                    // spi_tx_byte_o <= result_i[8 * data_pointer +: 8]; // sends LSB first
-                    spi_tx_byte_o <= result_i[31 - (8 * data_pointer) -: 8]; // sends MSB first
-                    data_pointer <= data_pointer + 2'd1;
+                // otherwise if the instruction is TRANSFER or REPEAT
+                end else if (!instruction_received & (spi_rx_byte_i >= TRANSFER & spi_rx_byte_i <= REPEAT)) begin
+                    current_instruction <= spi_rx_byte_i;
+
+                    // reset datapointer if we need to send entire thing again
+                    if (spi_rx_byte_i == REPEAT) begin
+                        data_pointer <= 2'd1;
+                        
+                    end else if (spi_rx_byte_i == TRANSFER) begin
+                        // https://stackoverflow.com/questions/18067571/indexing-vectors-and-arrays-with
+                        // spi_tx_byte_o <= result_i[8 * data_pointer +: 8]; // sends LSB first
+                        spi_tx_byte_o <= result_i[31 - (8 * data_pointer) -: 8]; // sends MSB first
+                        data_pointer <= data_pointer + 2'd1;
+                    end
+
+                end else if (instruction_received) begin
+                    received_byte_count <= received_byte_count + 8'd1;
+
+                    if (current_instruction == STREAM) begin
+                        spi_tx_byte_o <= stream_i[23 - (8*data_pointer) -: 8];
+                        data_pointer <= data_pointer + 2'd1;
+                    end
                 end
 
-            end else if (instruction_received) begin
-                received_byte_count <= received_byte_count + 8'd1;
+                    // shift any and all data into the register
+                    rebuilt_instruction <= {rebuilt_instruction[55:0], spi_rx_byte_i};
 
-                if (current_instruction == STREAM) begin
-                    spi_tx_byte_o <= stream_i[23 - (8*data_pointer) -: 8];
-                    data_pointer <= data_pointer + 2'd1;
+            // on the negative edge of spi_rx_valid_i
+            end else if (~spi_rx_valid_i) begin
+                // if instruction got and all bytes got then reset counters
+                if (instruction_received & (received_byte_count == expected_byte_count)) begin
+                    instruction_received <= 0;
+                    received_byte_count <= 0;
+                end else if (current_instruction == TRANSFER) begin
+                    // spi_tx_valid <= 0;
                 end
-            end
-
-                // shift any and all data into the register
-                rebuilt_instruction <= {rebuilt_instruction[55:0], spi_rx_byte_i};
-
-        // on the negative edge of spi_rx_valid_i
-        end else if (~spi_rx_valid_i) begin
-            // if instruction got and all bytes got then reset counters
-            if (instruction_received & (received_byte_count == expected_byte_count)) begin
-                instruction_received <= 0;
-                received_byte_count <= 0;
-            end else if (current_instruction == TRANSFER) begin
-                // spi_tx_valid <= 0;
             end
         end
     end
