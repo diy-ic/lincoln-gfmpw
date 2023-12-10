@@ -5,6 +5,7 @@ module titan (
     inout vss,		// User area ground
 `endif
 	input wire sys_clock_i,
+	input wire rst_i,
 	input wire spi_clock_i,
 	input wire spi_cs_i,     // chip select
 	input wire spi_pico_i,   // peripheral in, controller out - rx from mcu
@@ -30,7 +31,7 @@ module titan (
 		.clk_i(sys_clock_i), .spi_rx_valid_i(rx_valid_w), .spi_rx_byte_i(rx_byte_i),
 		.result_i(internal_bus_result), .stream_i(internal_bus_stream_w),
 		.instruction_o(internal_bus_instruction), .address_o(internal_bus_address),
-		.value_o(internal_bus_value), .spi_tx_byte_o(tx_byte_o)
+		.value_o(internal_bus_value), .spi_tx_byte_o(tx_byte_o), .rst_i(rst_i)
 	);
 
 	core_interface # (
