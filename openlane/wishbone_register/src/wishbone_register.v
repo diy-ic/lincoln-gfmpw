@@ -8,22 +8,22 @@ module wishbone_register # (
     input wbs_stb_i,
     input wbs_cyc_i,
     input wbs_we_i,
-    input [3:0] wbs_sel_i,
+    // input [3:0] wbs_sel_i,
     input [31:0] wbs_dat_i,
     input [31:0] wbs_adr_i,
     input [31:0] data_i,
 
     output reg wbs_ack_o,
     output reg [31:0] wbs_dat_o,
-    output wire [31:0] reg_q_o
+    output reg [31:0] reg_q_o
 );
 
-    reg [31:0] r_data_o;
-    assign reg_q_o = r_data_o;
+    // reg [31:0] r_data_o;
+    // assign reg_q_o = r_data_o;
 
     always @ (posedge wb_clk_i or posedge wb_rst_i) begin
         if (wb_rst_i) begin
-            r_data_o <= 'h0;
+            // r_data_o <= 'h0;
             wbs_ack_o <= 'h0;
         end else begin
 
@@ -31,7 +31,44 @@ module wishbone_register # (
                 wbs_ack_o <= 'h1;
 
                 if (wbs_we_i == 1'b1) begin
-                    r_data_o <= wbs_dat_i;
+                    reg_q_o <= wbs_dat_i;
+                end else if (wbs_we_i == 1'b0) begin
+                    wbs_dat_o <= data_i;
+                end 
+            end
+        end
+    end
+endmodule
+
+module wishbone_register_mut_addr(
+    // addresses must be after 30 00 00 00 
+    // https://caravel-harness.readthedocs.io/en/latest/memory-mapped-io-summary.html
+    input wb_clk_i,
+    input wb_rst_i,
+    input wbs_stb_i,
+    input wbs_cyc_i,
+    input wbs_we_i,
+    // input [3:0] wbs_sel_i,
+    input [31:0] wbs_dat_i,
+    input [31:0] wbs_adr_i,
+    input [31:0] data_i,
+    input [31:0] address,
+
+    output reg wbs_ack_o,
+    output reg [31:0] wbs_dat_o,
+    output reg [31:0] reg_q_o
+);
+
+    always @ (posedge wb_clk_i or posedge wb_rst_i) begin
+        if (wb_rst_i) begin
+            wbs_ack_o <= 'h0;
+        end else begin
+
+            if (wbs_stb_i && wbs_adr_i == address) begin
+                wbs_ack_o <= 'h1;
+
+                if (wbs_we_i == 1'b1) begin
+                    reg_q_o <= wbs_dat_i;
                 end else if (wbs_we_i == 1'b0) begin
                     wbs_dat_o <= data_i;
                 end 
