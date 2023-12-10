@@ -13,6 +13,9 @@ openlane/titan/runs/*
 __pycache__
 sim_build
 results.xml
+venv-cocotb
+logs/
+.vscode
 
 # temporarily ignore
 def/
