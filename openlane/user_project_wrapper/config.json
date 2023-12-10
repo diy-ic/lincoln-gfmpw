@@ -10,20 +10,34 @@
 	"CLOCK_PERIOD": 25,
 	"_commentPL_RESIZER_HOLD_SLACK_MARGIN": 0.8,
 	"_commentGLB_RESIZER_HOLD_SLACK_MARGIN": 0.8,
+	"_commentPL_RESIZER_SETUP_MAX_BUFFER_PERCENT": 90,
+	"_commentGLB_RESIZER_SETUP_MAX_BUFFER_PERCENT": 70,
+	"_commentPL_RESIZER_ALLOW_SETUP_VIOS": 1,
+	"_commentGLB_RESIZER_ALLOW_SETUP_VIOS": 1,
 	"MACRO_PLACEMENT_CFG": "dir::macro.cfg",
 	"VERILOG_FILES_BLACKBOX": [
 		"dir::../../verilog/gl/user_proj_example.v",
 		"dir::../../verilog/gl/titan.v",
 		"dir::../../verilog/gl/manchester_baby.v",
 		"dir::../../verilog/gl/ram_5x32.v",
-		"dir::../../verilog/gl/mos6502_decoder.v"
+		"dir::../../verilog/gl/mos6502_decoder.v",
+		"dir::../../verilog/gl/mos_wishbone_interface.v",
+		"dir::../../verilog/gl/mos_la_interface.v",
+		"dir::../../verilog/gl/ram_plexer.v",
+		"dir::../../verilog/gl/spi_ram_interface.v",
+		"dir::../../verilog/gl/constant_vectors.v"
 	],
 	"EXTRA_LEFS": [
 		"dir::../../lef/user_proj_example.lef",
 		"dir::../../lef/titan.lef",
 		"dir::../../lef/manchester_baby.lef",
 		"dir::../../lef/ram_5x32.lef",
-		"dir::../../lef/mos6502_decoder.lef"
+		"dir::../../lef/mos6502_decoder.lef",
+		"dir::../../lef/mos_wishbone_interface.lef",
+		"dir::../../lef/mos_la_interface.lef",
+		"dir::../../lef/ram_plexer.lef",
+		"dir::../../lef/spi_ram_interface.lef",
+		"dir::../../lef/constant_vectors.lef"
 	],
 
 	"EXTRA_GDS_FILES": [
@@ -31,7 +45,12 @@
 		"dir::../../gds/titan.gds",
 		"dir::../../gds/manchester_baby.gds",
 		"dir::../../gds/ram_5x32.gds",
-		"dir::../../gds/mos6502_decoder.gds"
+		"dir::../../gds/mos6502_decoder.gds",
+		"dir::../../gds/mos_wishbone_interface.gds",
+		"dir::../../gds/mos_la_interface.gds",
+		"dir::../../gds/ram_plexer.gds",
+		"dir::../../gds/spi_ram_interface.gds",
+		"dir::../../gds/constant_vectors.gds"
 	],
 
 	"EXTRA_LIBS": [
@@ -39,14 +58,23 @@
 		"dir::../../lib/titan.lib",
 		"dir::../../lib/manchester_baby.lib",
 		"dir::../../lib/ram_5x32.lib",
-		"dir::../../lib/mos6502_decoder.lib"
+		"dir::../../lib/mos6502_decoder.lib",
+		"dir::../../lib/mos_wishbone_interface.lib",
+		"dir::../../lib/mos_la_interface.lib",
+		"dir::../../lib/ram_plexer.lib",
+		"dir::../../lib/spi_ram_interface.lib",
+		"dir::../../lib/constant_vectors.lib"
 	],
 
 	"EXTRA_SPEFS": [
-		"titan",
-		"dir::../../spef/multicorner/titan.min.spef",
-		"dir::../../spef/multicorner/titan.nom.spef",
-		"dir::../../spef/multicorner/titan.max.spef",
+		"mos6502_decoder",
+		"dir::../../spef/multicorner/mos6502_decoder.min.spef",
+		"dir::../../spef/multicorner/mos6502_decoder.nom.spef",
+		"dir::../../spef/multicorner/mos6502_decoder.max.spef",
+		"mos_la_interface",
+		"dir::../../spef/multicorner/mos_la_interface.min.spef",
+		"dir::../../spef/multicorner/mos_la_interface.nom.spef",
+		"dir::../../spef/multicorner/mos_la_interface.max.spef",
 		"manchester_baby",
 		"dir::../../spef/multicorner/manchester_baby.min.spef",
 		"dir::../../spef/multicorner/manchester_baby.nom.spef",
@@ -55,17 +83,33 @@
 		"dir::../../spef/multicorner/ram_5x32.min.spef",
 		"dir::../../spef/multicorner/ram_5x32.nom.spef",
 		"dir::../../spef/multicorner/ram_5x32.max.spef",
-		"mos6502_decoder",
-		"dir::../../spef/multicorner/mos6502_decoder.min.spef",
-		"dir::../../spef/multicorner/mos6502_decoder.nom.spef",
-		"dir::../../spef/multicorner/mos6502_decoder.max.spef"
-	],
-
+		"constant_vectors",
+		"dir::../../spef/multicorner/constant_vectors.min.spef",
+		"dir::../../spef/multicorner/constant_vectors.nom.spef",
+		"dir::../../spef/multicorner/constant_vectors.max.spef",
+		"titan",
+		"dir::../../spef/multicorner/titan.min.spef",
+		"dir::../../spef/multicorner/titan.nom.spef",
+		"dir::../../spef/multicorner/titan.max.spef",
+		"spi_ram_interface",
+		"dir::../../spef/multicorner/spi_ram_interface.min.spef",
+		"dir::../../spef/multicorner/spi_ram_interface.nom.spef",
+		"dir::../../spef/multicorner/spi_ram_interface.max.spef",
+		"ram_plexer",
+		"dir::../../spef/multicorner/ram_plexer.min.spef",
+		"dir::../../spef/multicorner/ram_plexer.nom.spef",
+		"dir::../../spef/multicorner/ram_plexer.max.spef"
+		],
 	"FP_PDN_MACRO_HOOKS": [
-		"titan_instance vdd vss vdd vss,",
-		"manchester_baby_instance vdd vss vdd vss,",
+		"mos_la_mux vdd vss vdd vss,",
 		"mos_decoder vdd vss vdd vss,",
-		"ram_block vdd vss vdd vss"
+		"manchester_baby_instance vdd vss vdd vss,",
+		"ram_block vdd vss vdd vss,",
+		"spi_ram_interface vdd vss vdd vss,",
+		"ram_plex vdd vss vdd vss,",
+		"consts vdd vss vdd vss,",
+		"titan_instance vdd vss vdd vss"
+
 	],
 
 	"QUIT_ON_SYNTH_CHECKS": 0,

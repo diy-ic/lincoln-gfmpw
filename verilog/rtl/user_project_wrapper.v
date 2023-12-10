@@ -14,21 +14,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 `default_nettype none
-/*
- *-------------------------------------------------------------
- *
- * user_project_wrapper
- *
- * This wrapper enumerates all of the pins available to the
- * user for the user project.
- *
- * An example user project is provided in this wrapper.  The
- * example should be removed and replaced with the actual
- * user project.
- *
- *-------------------------------------------------------------
- */
-
 module user_project_wrapper #(
     parameter BITS = 32
 ) (
@@ -66,113 +51,148 @@ module user_project_wrapper #(
     output [2:0] user_irq
 );
 
-/*--------------------------------------*/
-/* User project is instantiated  here   */
-/*--------------------------------------*/
+wire w_shared_spi_clk, w_shared_spi_pico, w_shared_spi_poci;
+assign w_shared_spi_clk = io_in[4];
+assign w_shared_spi_pico = io_in[5];
+assign w_shared_spi_poci = io_out[6];
+
+wire w_zero;
+constant_vectors consts (
+`ifdef USE_POWER_PINS
+    .vdd(vdd),
+    .vss(vss),
+`endif
+    .zero(w_zero)
+);
 
 titan titan_instance (
 `ifdef USE_POWER_PINS
-	.vdd(vdd),	// User area 1 1.8V power
-	.vss(vss),	// User area 1 digital ground
+    .vdd(vdd),
+    .vss(vss),
 `endif
     .sys_clock_i(wb_clk_i),
-    .spi_clock_i(io_in[0]),
-    .spi_cs_i(io_in[1]),
-    .spi_pico_i(io_in[2]),
-    .spi_poci_o(io_out[0])
+    .rst_i(wb_rst_i),
+    .spi_clock_i(w_shared_spi_clk),
+    .spi_cs_i(io_in[7]),
+    .spi_pico_i(w_shared_spi_pico),  // input
+    .spi_poci_o(w_shared_spi_poci)   // output
 );
 
-wire [31:0] w_ram_data_i, w_ram_data_o;
-wire w_ram_we, w_ram_clk;
-wire [4:0] w_ram_addr;
 
-ram_5x32 ram_block (
-`ifdef USE_POWER_PINS
-	.vdd(vdd),	// User area 1 1.8V power
-	.vss(vss),	// User area 1 digital ground
-`endif
-    .clk_i(w_ram_clk),
-    .we_i(w_ram_we),
-    .address_i(w_ram_addr),
-    .data_i(w_ram_data_i),
-    .data_o(w_ram_data_o)
-);
-
-manchester_baby manchester_baby_instance (
-`ifdef USE_POWER_PINS
-	.vdd(vdd),	// User area 1 1.8V power
-	.vss(vss),	// User area 1 digital ground
-`endif
-    .clock(wb_clk_i),
-    .reset_i(wb_rst_i),
-    .ram_data_i(w_ram_data_o),
-    .ram_data_o(w_ram_data_i),
-    .ram_addr_o(w_ram_addr),
-    .ram_rw_en_o(w_ram_we),
-    .stop_lamp_o(io_out[1]),
-    .logisim_clock_tree_0_out(w_ram_clk)
-);
+// ------ MOS 6502 DECODER + SUPPORTING LOGIC ------
+wire [65:0] w_decoded_instruction;
+wire [31:0] w_decoded_muxed;
+assign la_data_out[31:0] = w_decoded_muxed;
+// wire [7:0] w_instruction; // unused
 
 mos6502_decoder mos_decoder (
 `ifdef USE_POWER_PINS
-	.vdd(vdd),	// User area 1 1.8V power
-	.vss(vss),	// User area 1 digital ground
+    .vdd(vdd),
+    .vss(vss),
 `endif
-    .instruction_i(io_in[10:3]),
+    .instruction_i(la_data_in[7:0]),
+    .decoded_instruction_o(w_decoded_instruction)
+);
 
-    //                      65     64   63        0
-    .decoded_instruction_o({io_out[3:2], la_data_out})
+mos_la_interface mos_la_mux (
+`ifdef USE_POWER_PINS
+    .vdd(vdd),
+    .vss(vss),
+`endif
+    .decoder_result_i(w_decoded_instruction),
+    .sel(io_in[1:0]),
+    .decoder_bytes_o(w_decoded_muxed)
+);
+
+// ------ MANCHESTER BABY + SUPPORTING HARDWARE ------
+wire [4:0] w_baby_ram_addr, w_spi_ram_addr;
+wire [31:0] w_ram_data_from_baby, w_ram_data_to_baby, w_spi_ram_data_from_if, w_spi_ram_data_to_if;
+wire w_baby_ram_we; // write enable
+wire w_baby_ram_clk; // logisim clock
+
+wire w_ram_plex_clk;
+wire w_ram_plex_we;
+wire [31:0] w_ram_plex_data_from_plex, w_ram_plex_data_to_plex;
+wire [4:0] w_ram_plex_addr;
+wire w_baby_halt_status;
+
+manchester_baby manchester_baby_instance (
+`ifdef USE_POWER_PINS
+    .vdd(vdd),
+    .vss(vss),
+`endif
+    .sys_clk_i(wb_clk_i),
+    .rst_i(wb_rst_i),
+    .hlt_ext_i(io_in[2]),
+    .hlt_int_i(w_zero),
+    .hlt_status(w_baby_halt_status),
+    .ram_data_i(w_ram_data_to_baby),
+    .ram_data_o(w_ram_data_from_baby),
+    .ram_addr_o(w_baby_ram_addr),
+    .ram_rw_en_o(w_baby_ram_we),
+    .stop_lamp_o(io_out[3]),
+    .logisim_clock_tree_0_out(w_baby_ram_clk)
+);
+
+ram_5x32 ram_block (
+`ifdef USE_POWER_PINS
+    .vdd(vdd),
+    .vss(vss),
+`endif
+    // .clk_i(w_baby_ram_clk),
+    // .we_i(w_baby_ram_we),
+    // .address_i(w_baby_ram_addr),
+    // .data_i(w_ram_data_from_baby),
+    // .data_o(w_ram_data_to_baby)
+    .clk_i(w_ram_plex_clk),
+    .we_i(w_baby_ram_we),
+    .address_i(w_ram_plex_addr),
+    .data_i(w_ram_plex_data_from_plex),
+    .data_o(w_ram_plex_data_to_plex)
+);
+
+spi_ram_interface spi_ram_interface (
+`ifdef USE_POWER_PINS
+    .vdd(vdd),
+    .vss(vss),
+`endif
+    .sys_clock_i(wb_clk_i),
+    .rst_i(wb_rst_i),
+  
+    .spi_clock_i(w_shared_spi_clk),
+    .spi_cs_i(io_in[8]),
+    .spi_pico_i(w_shared_spi_pico),
+    .spi_poci_o(w_shared_spi_poci),
+  
+    // .we_o(), // TODO: re-connect this signal
+    .addr_o(w_spi_ram_addr),
+    .data_o(w_spi_ram_data_from_if),
+    .data_i(w_spi_ram_data_to_if)
+);
+
+ram_plexer ram_plex (
+`ifdef USE_POWER_PINS
+    .vdd(vdd),
+    .vss(vss),
+`endif
+    .baby_clk_i(w_baby_ram_clk),
+    .baby_addr_i(w_baby_ram_addr),
+    .baby_data_i(w_ram_data_from_baby),
+    .baby_data_o(w_ram_data_to_baby),
+    
+    .spi_clk_i(wb_clk_i),
+    .spi_addr_i(w_spi_ram_addr),
+    .spi_data_i(w_spi_ram_data_from_if),
+    .spi_data_o(w_spi_ram_data_to_if),
+    
+    .ram_clk_o(w_ram_plex_clk),
+    .ram_addr_o(w_ram_plex_addr),
+    .ram_data_o(w_ram_plex_data_from_plex),
+    .ram_data_i(w_ram_plex_data_to_plex),
+
+    .baby_halt(w_baby_halt_status),
+    .spi_cs(io_in[8])
 );
 
 endmodule	// user_project_wrapper
 `default_nettype wire
-
-
-
-//     lincoln_gfmpw mprj (
-//     `ifdef USE_POWER_PINS
-//         .vdd(vdd),	// User area 1 1.8V power
-//         .vss(vss),	// User area 1 digital ground
-//     `endif
-
-//     .wb_clk_i(wb_clk_i),
-//     // .wb_rst_i(wb_rst_i),
-
-//         // MGMT SoC Wishbone Slave
-
-//     // .wbs_cyc_i(wbs_cyc_i),
-//     // .wbs_stb_i(wbs_stb_i),
-//     // .wbs_we_i(wbs_we_i),
-//     // .wbs_sel_i(wbs_sel_i),
-//     // .wbs_adr_i(wbs_adr_i),
-//     // .wbs_dat_i(wbs_dat_i),
-//     // .wbs_ack_o(wbs_ack_o),
-//     // .wbs_dat_o(wbs_dat_o),
-
-//         // Logic Analyzer
-
-//         .la_data_in(la_data_in),
-//         .la_data_out(la_data_out),
-//         .la_oenb (la_oenb),
-
-//         // IO Pads
-
-//     .io_in ({io_in[37:30],io_in[7:0]}),
-//     .io_out({io_out[37:30],io_out[7:0]}),
-//     .io_oeb({io_oeb[37:30],io_oeb[7:0]}),
-
-//     // IRQ
-//     // .irq(user_irq)
-// );
-// assign io_out[38:1] = 'h0;
-// assign user_irq = 'h0;
-
-// titan titan_instance (
-// `ifdef USE_POWER_PINS
-// 	.vdd(vdd),	// User area 1 1.8V power
-// 	.vss(vss),	// User area 1 digital ground
-// `endif
-//     .wb_clk_i(wb_clk_i),
-//     .io_in(io_in),
-//     .io_out(io_out)
-// );
