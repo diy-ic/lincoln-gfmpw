@@ -23,7 +23,8 @@
 		"dir::../../verilog/gl/mos_la_interface.v",
 		"dir::../../verilog/gl/ram_plexer.v",
 		"dir::../../verilog/gl/spi_ram_interface.v",
-		"dir::../../verilog/gl/constant_vectors.v"
+		"dir::../../verilog/gl/constant_vectors.v",
+		"dir::../../verilog/gl/mos_spi_interface.v"
 	],
 	"EXTRA_LEFS": [
 		"dir::../../lef/user_proj_example.lef",
@@ -35,7 +36,8 @@
 		"dir::../../lef/mos_la_interface.lef",
 		"dir::../../lef/ram_plexer.lef",
 		"dir::../../lef/spi_ram_interface.lef",
-		"dir::../../lef/constant_vectors.lef"
+		"dir::../../lef/constant_vectors.lef",
+		"dir::../../lef/mos_spi_interface.lef"
 	],
 
 	"EXTRA_GDS_FILES": [
@@ -48,7 +50,8 @@
 		"dir::../../gds/mos_la_interface.gds",
 		"dir::../../gds/ram_plexer.gds",
 		"dir::../../gds/spi_ram_interface.gds",
-		"dir::../../gds/constant_vectors.gds"
+		"dir::../../gds/constant_vectors.gds",
+		"dir::../../gds/mos_spi_interface.gds"
 	],
 
 	"EXTRA_LIBS": [
@@ -61,7 +64,8 @@
 		"dir::../../lib/mos_la_interface.lib",
 		"dir::../../lib/ram_plexer.lib",
 		"dir::../../lib/spi_ram_interface.lib",
-		"dir::../../lib/constant_vectors.lib"
+		"dir::../../lib/constant_vectors.lib",
+		"dir::../../lib/mos_spi_interface.lib"
 	],
 
 	"EXTRA_SPEFS": [
@@ -100,7 +104,11 @@
 		"mos_wishbone_interface",
 		"dir::../../spef/multicorner/mos_wishbone_interface.min.spef",
 		"dir::../../spef/multicorner/mos_wishbone_interface.nom.spef",
-		"dir::../../spef/multicorner/mos_wishbone_interface.max.spef"
+		"dir::../../spef/multicorner/mos_wishbone_interface.max.spef",
+		"mos_spi_interface",
+		"dir::../../spef/multicorner/mos_spi_interface.min.spef",
+		"dir::../../spef/multicorner/mos_spi_interface.nom.spef",
+		"dir::../../spef/multicorner/mos_spi_interface.max.spef"
 		
 		],
 	"FP_PDN_MACRO_HOOKS": [
@@ -112,7 +120,8 @@
 		"ram_plex vdd vss vdd vss,",
 		"consts vdd vss vdd vss,",
 		"titan_instance vdd vss vdd vss,",
-		"mos_decoder_wb vdd vss vdd vss"
+		"mos_decoder_wb vdd vss vdd vss,",
+		"mos_decoder_spi vdd vss vdd vss"
 	],
 
 	"QUIT_ON_SYNTH_CHECKS": 0,

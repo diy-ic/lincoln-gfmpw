@@ -110,14 +110,6 @@ mos_la_interface mos_la_mux (
 wire [65:0] w_wb_decoded_instruction;
 wire [7:0] w_wb_decoder_instruction;
 
-// mos6502_decoder mos_decoder_wb (
-// `ifdef USE_POWER_PINS
-//     .vdd(vdd),
-//     .vss(vss),
-// `endif
-//     .instruction_i(w_wb_decoder_instruction),
-//     .decoded_instruction_o(w_wb_decoded_instruction)
-// );
 
 mos_wishbone_interface mos_decoder_wb (
 `ifdef USE_POWER_PINS
@@ -136,6 +128,20 @@ mos_wishbone_interface mos_decoder_wb (
     .wbs_dat_o(wbs_dat_o)
     // .decoder_result_i(w_wb_decoded_instruction), // 66 bits
     // .decoder_instruction_o(w_wb_decoder_instruction) // 8 bits
+);
+
+// decoder over spi
+mos_spi_interface mos_decoder_spi (
+`ifdef USE_POWER_PINS
+    .vdd(vdd),
+    .vss(vss),
+`endif
+    .sys_clock_i(wb_clk_i),
+	.rst_i(wb_rst_i),
+	.spi_clock_i(w_shared_spi_clk),
+	.spi_cs_i(io_in[9]),     // chip select
+	.spi_pico_i(w_shared_spi_pico),   // peripheral in, controller out - rx from mcu
+	.spi_poci_o(w_shared_spi_poci)   // peripheral out, controller in - tx to mcu
 );
 
 // ------ MANCHESTER BABY + SUPPORTING HARDWARE ------
