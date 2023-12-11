@@ -5,24 +5,28 @@ module ram_plexer (
 `endif
     // baby io
     input baby_clk_i,
+    input baby_we_i,
     input [4:0] baby_addr_i,
     input [31:0] baby_data_i,
     output reg [31:0] baby_data_o,
 
     // spi io
     input spi_clk_i, // not to be confused with the actual SPI clock provided externally
+    input spi_we_i,
     input [4:0] spi_addr_i,
     input [31:0] spi_data_i,
     output reg [31:0] spi_data_o,
 
     // wishbone io
-    // input wb_clk_i,
-    // input [31:0] wb_addr_i,
-    // input [31:0] wb_data_i,
-    // output reg [31:0] wb_data_o,
+    input ram_wb_clk_i,
+    input ram_wb_we_i,
+    input [4:0] ram_wb_addr_i,
+    input [31:0] ram_wb_data_i,
+    output reg [31:0] ram_wb_data_o,
 
     // ram
     output reg ram_clk_o,
+    output reg ram_we_o,
     output reg [4:0] ram_addr_o,
     output reg [31:0] ram_data_o,
     input [31:0] ram_data_i,
@@ -30,7 +34,7 @@ module ram_plexer (
     // plex
     input baby_halt,
     input spi_cs,
-    // input wb_config_en
+    input ram_wb_config_en
 );
 
     // plexing states:
@@ -54,18 +58,19 @@ module ram_plexer (
     */
 
 assign baby_data_o = ram_data_i;
-assign wb_data_o = ram_data_i;
+assign ram_wb_data_o = ram_data_i;
 assign spi_data_o = ram_data_i;
 
 always @ (*) begin
-    // case ({wb_config_en, spi_cs, baby_halt})
-    case ({1'b0, spi_cs, baby_halt})
+    case ({ram_wb_config_en, spi_cs, baby_halt})
+    // case ({1'b0, spi_cs, baby_halt})
 
         // no halt
         3'b000: begin
             ram_addr_o <= baby_addr_i;
             ram_data_o <= baby_data_i;
             ram_clk_o <= baby_clk_i;
+            ram_we_o <= baby_we_i;
         end
 
         // halt + spi cs
@@ -73,14 +78,16 @@ always @ (*) begin
             ram_addr_o <= spi_addr_i;
             ram_data_o <= spi_data_i;
             ram_clk_o <= spi_clk_i;
+            ram_we_o <= spi_we_i;
         end
 
         // halt + wb_config_en
-        // 3'b101: begin
-        //     ram_addr_o <= wb_addr_i;
-        //     ram_data_o <= wb_data_i;
-        //     ram_clk_o <= wb_clk_i;
-        // end
+        3'b101: begin
+            ram_addr_o <= ram_wb_addr_i;
+            ram_data_o <= ram_wb_data_i;
+            ram_clk_o <= ram_wb_clk_i;
+            ram_we_o <= ram_wb_we_i;
+        end
 
         // default let baby control ram
         default: begin
