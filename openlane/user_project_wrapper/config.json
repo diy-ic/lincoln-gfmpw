@@ -24,7 +24,9 @@
 		"dir::../../verilog/gl/ram_plexer.v",
 		"dir::../../verilog/gl/spi_ram_interface.v",
 		"dir::../../verilog/gl/constant_vectors.v",
-		"dir::../../verilog/gl/mos_spi_interface.v"
+		"dir::../../verilog/gl/mos_spi_interface.v",
+		"dir::../../verilog/gl/ram_wishbone_interface.v",
+		"dir::../../verilog/gl/wishbone_plexer.v"
 	],
 	"EXTRA_LEFS": [
 		"dir::../../lef/user_proj_example.lef",
@@ -37,7 +39,9 @@
 		"dir::../../lef/ram_plexer.lef",
 		"dir::../../lef/spi_ram_interface.lef",
 		"dir::../../lef/constant_vectors.lef",
-		"dir::../../lef/mos_spi_interface.lef"
+		"dir::../../lef/mos_spi_interface.lef",
+		"dir::../../lef/ram_wishbone_interface.lef",
+		"dir::../../lef/wishbone_plexer.lef"
 	],
 
 	"EXTRA_GDS_FILES": [
@@ -51,7 +55,9 @@
 		"dir::../../gds/ram_plexer.gds",
 		"dir::../../gds/spi_ram_interface.gds",
 		"dir::../../gds/constant_vectors.gds",
-		"dir::../../gds/mos_spi_interface.gds"
+		"dir::../../gds/mos_spi_interface.gds",
+		"dir::../../gds/ram_wishbone_interface.gds",
+		"dir::../../gds/wishbone_plexer.gds"
 	],
 
 	"EXTRA_LIBS": [
@@ -65,7 +71,9 @@
 		"dir::../../lib/ram_plexer.lib",
 		"dir::../../lib/spi_ram_interface.lib",
 		"dir::../../lib/constant_vectors.lib",
-		"dir::../../lib/mos_spi_interface.lib"
+		"dir::../../lib/mos_spi_interface.lib",
+		"dir::../../lib/ram_wishbone_interface.lib",
+		"dir::../../lib/wishbone_plexer.lib"
 	],
 
 	"EXTRA_SPEFS": [
@@ -108,7 +116,15 @@
 		"mos_spi_interface",
 		"dir::../../spef/multicorner/mos_spi_interface.min.spef",
 		"dir::../../spef/multicorner/mos_spi_interface.nom.spef",
-		"dir::../../spef/multicorner/mos_spi_interface.max.spef"
+		"dir::../../spef/multicorner/mos_spi_interface.max.spef",
+		"ram_wishbone_interface",
+		"dir::../../spef/multicorner/ram_wishbone_interface.min.spef",
+		"dir::../../spef/multicorner/ram_wishbone_interface.nom.spef",
+		"dir::../../spef/multicorner/ram_wishbone_interface.max.spef",
+		"wishbone_plexer",
+		"dir::../../spef/multicorner/wishbone_plexer.min.spef",
+		"dir::../../spef/multicorner/wishbone_plexer.nom.spef",
+		"dir::../../spef/multicorner/wishbone_plexer.max.spef"
 		
 		],
 	"FP_PDN_MACRO_HOOKS": [
@@ -121,7 +137,9 @@
 		"consts vdd vss vdd vss,",
 		"titan_instance vdd vss vdd vss,",
 		"mos_decoder_wb vdd vss vdd vss,",
-		"mos_decoder_spi vdd vss vdd vss"
+		"mos_decoder_spi vdd vss vdd vss,",
+		"ram_wb_interface vdd vss vdd vss,",
+		"wb_plex vdd vss vdd vss"
 	],
 
 	"QUIT_ON_SYNTH_CHECKS": 0,
