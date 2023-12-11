@@ -1,81 +1,3 @@
-// module mos_wishbone_interface (
-// `ifdef USE_POWER_PINS
-//     inout vdd,		// User area 5.0V supply
-//     inout vss,		// User area ground
-// `endif
-//     input wb_clk_i,
-//     input wb_rst_i,
-//     input wbs_stb_i,
-//     input wbs_cyc_i,
-//     input wbs_we_i,
-//     // input [3:0] wbs_sel_i,
-//     input [31:0] wbs_dat_i,
-//     input [31:0] wbs_adr_i,
-//     output reg wbs_ack_o,
-//     output reg [31:0] wbs_dat_o,
-
-//     // input [65:0] decoder_result_i,
-//     output [7:0] decoder_instruction_o,
-// );    
-
-//     localparam BASE_WISHBONE_ADDRESS = 32'h30000000;
-//     localparam INSTRUCTION_REG_ADDR = BASE_WISHBONE_ADDRESS;
-//     localparam DECODER_LOW_REG_ADDR = INSTRUCTION_REG_ADDR + 4;
-//     localparam DECODER_MID_REG_ADDR = DECODER_LOW_REG_ADDR + 4;
-//     localparam DECODER_HI_REG_ADDR  = DECODER_MID_REG_ADDR + 4;
-
-//     wire [31:0] w_instr_wb_data, w_instr_reg_data;
-//     wire w_instr_wb_ack;
-
-//     wishbone_register # (
-//         .ADDRESS(INSTRUCTION_REG_ADDR)
-//     ) wbreg_instr (
-//         .wb_clk_i(wb_clk_i), .wb_rst_i(wb_rst_i), .wbs_stb_i(wbs_stb_i),
-//         .wbs_cyc_i(wbs_cyc_i), .wbs_we_i(wbs_we_i),
-//         .wbs_dat_i(wbs_dat_i), .wbs_adr_i(wbs_adr_i), 
-    
-//         .wbs_ack_o(w_instr_wb_ack),
-//         .wbs_dat_o(w_instr_wb_data), 
-//         .reg_q_o(w_instr_reg_data)
-//     );
-
-//     assign decoder_instruction_o = w_instr_reg_data[7:0];
-
-//     // select what to output
-//     always @ (*) begin
-//         case (wbs_adr_i)
-
-//             INSTRUCTION_REG_ADDR: begin
-//                 wbs_ack_o <= w_instr_wb_ack;
-//                 wbs_dat_o <= w_instr_wb_data;
-//             end
-
-//             default: begin
-//                 wbs_ack_o <= 'h0;
-//                 wbs_dat_o <= 'h0;
-//             end
-
-//             // DECODER_LOW_REG_ADDR: begin
-//             //     wbs_ack_o <= w_wbreg_ack_decoder_low;
-//             //     wbs_dat_o <= w_wb_dat_wbreg_decoder_low;
-//             // end
-
-//             // DECODER_MID_REG_ADDR: begin
-//             //     wbs_ack_o <= w_wbreg_ack_decoder_mid;
-//             //     wbs_dat_o <= w_wb_dat_wbreg_decoder_mid;
-//             // end
-
-//             // DECODER_HI_REG_ADDR: begin
-//             //     wbs_ack_o <= w_wbreg_ack_decoder_hi;
-//             //     wbs_dat_o <= w_wb_dat_wbreg_decoder_hi;
-//             // end
-//         endcase
-//     end
-
-// endmodule
-
-
-
 module mos_wishbone_interface (
 `ifdef USE_POWER_PINS
     inout vdd,		// User area 5.0V supply
@@ -106,10 +28,11 @@ module mos_wishbone_interface (
 
 
     localparam BASE_WISHBONE_ADDRESS = 32'h30000000;
-    localparam INSTRUCTION_REG_ADDR = BASE_WISHBONE_ADDRESS;       // 30 00 00 00
-    localparam DECODER_LOW_REG_ADDR = INSTRUCTION_REG_ADDR + 4;    // 30 00 00 04
-    localparam DECODER_MID_REG_ADDR = DECODER_LOW_REG_ADDR + 4;    // 30 00 00 08
-    localparam DECODER_HI_REG_ADDR  = DECODER_MID_REG_ADDR + 4;    // 30 00 00 12
+    localparam INSTRUCTION_REG_ADDR = BASE_WISHBONE_ADDRESS;       // 30 00 00 00 -- 03
+    localparam DECODER_LOW_REG_ADDR = INSTRUCTION_REG_ADDR + 4;    // 30 00 00 04 -- 07
+    localparam DECODER_MID_REG_ADDR = DECODER_LOW_REG_ADDR + 4;    // 30 00 00 08 -- 11
+    localparam DECODER_HI_REG_ADDR  = DECODER_MID_REG_ADDR + 4;    // 30 00 00 12 -- 15
+    localparam ID_REGISTER = DECODER_HI_REG_ADDR + 4;              // 30 00 00 16 -- 19
 
     //                               95              64   63              32    31               0
     //                               31               0   31               0    31               0
@@ -128,7 +51,7 @@ module mos_wishbone_interface (
             
             // if strobe and if address is greater than or equal to the lowest AND address is less than or equal to the highest
             // this should gives us this wishbone address range
-            if (wbs_stb_i && (wbs_adr_i >= INSTRUCTION_REG_ADDR && wbs_adr_i <= DECODER_HI_REG_ADDR)) begin
+            if (wbs_stb_i && (wbs_adr_i >= INSTRUCTION_REG_ADDR && wbs_adr_i <= ID_REGISTER)) begin
                wbs_ack_o <= 1'b1;
 
                 // if reading
@@ -139,6 +62,7 @@ module mos_wishbone_interface (
                         DECODER_LOW_REG_ADDR: r_wb_data_o <= w_decoder_out[31:0];
                         DECODER_MID_REG_ADDR: r_wb_data_o <= w_decoder_out[63:32];
                         DECODER_HI_REG_ADDR: r_wb_data_o <= {{30{1'b0}}, w_decoder_out[65:64]};
+                        ID_REGISTER: r_wb_data_o <= 32'hB000DEAD; // boo! dead
                     endcase
 
                 // if writing
